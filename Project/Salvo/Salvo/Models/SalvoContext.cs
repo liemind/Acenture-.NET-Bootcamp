@@ -9,6 +9,6 @@ namespace Salvo.Models
         }
 
         //Items created in Model. They will register here.
-        public DbSet<SalvoItem> SalvoItems { get; set; }
+        public DbSet<Player> Players { get; set; }
     }
 }
