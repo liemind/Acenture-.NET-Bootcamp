@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210527181212_InitialCreate.cs" />
+    <Compile Remove="Migrations\20210527181212_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20210527181816_InitialCreate.cs" />
+    <Compile Remove="Migrations\20210527181816_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20210527182057_InitialCreate.cs" />
+    <Compile Remove="Migrations\20210527182057_InitialCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
