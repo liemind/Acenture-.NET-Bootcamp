@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Salvo.Models;
+using Salvo.Repositories;
 
 namespace Salvo
 {
@@ -32,6 +33,7 @@ namespace Salvo
             options.UseSqlServer(Configuration.GetConnectionString("SalvoDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IGameRepository, GameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
