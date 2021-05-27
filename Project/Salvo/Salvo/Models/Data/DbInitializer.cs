@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Salvo.Models;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace Salvo.Models.Data
 {
