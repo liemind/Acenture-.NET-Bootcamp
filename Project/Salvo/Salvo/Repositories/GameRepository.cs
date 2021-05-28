@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Salvo.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Salvo.Models;
 
 namespace Salvo.Repositories
 {
@@ -11,6 +9,13 @@ namespace Salvo.Repositories
         public GameRepository(SalvoContext repositoryContext)
             : base(repositoryContext)
         {
+        }
+
+        public IEnumerable<Game> GetAllGames()
+        {
+            return FindAll()
+                .OrderBy(ow => ow.CreationDate)
+                .ToList();
         }
     }
 }
