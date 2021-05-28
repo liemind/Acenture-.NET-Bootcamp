@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Salvo.Models.Data
 {
@@ -19,6 +20,7 @@ namespace Salvo.Models.Data
                 new Player{Email="kim_bauer@gmail.com"},
                 new Player{Email="t.almeida@ctu.gov"}
             };
+
 
             foreach (Player p in players)
             {
@@ -46,6 +48,42 @@ namespace Salvo.Models.Data
             }
             context.SaveChanges();
 
+            /*****
+             * Does not work
+            
+            // GamePlayer
+            if (context.GamePlayers.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            var gameplayers = new GamePlayer[]
+            {
+                new GamePlayer
+                {
+                    JoinDate=System.DateTime.Now,
+                    GameId=Array.Find(games, i => i.CreationDate == System.DateTime.Parse("2019-01-01T18:32:49.8716178")).Id,
+                    Game=Array.Find(games, i => i.CreationDate == System.DateTime.Parse("2019-01-01T21:32:49.8725565")),
+                    PlayerId=Array.Find(players, i => i.Email == "j.bauer@ctu.gov").Id,
+                    Player=Array.Find(players, i => i.Email == "j.bauer@ctu.gov")
+                },
+                new GamePlayer
+                {
+                    JoinDate=System.DateTime.Now.AddHours(3),
+                    GameId=Array.Find(games, i => i.CreationDate == System.DateTime.Parse("2019-01-01T21:32:49.8725565")).Id,
+                    Game=Array.Find(games, i => i.CreationDate == System.DateTime.Parse("2019-01-01T21:32:49.8725565")),
+                    PlayerId=Array.Find(players, i => i.Email == "kim_bauer@gmail.com").Id,
+                    Player=Array.Find(players, i => i.Email == "kim_bauer@gmail.com")
+                }
+
+            };
+
+            foreach (GamePlayer gp in gameplayers)
+            {
+                context.GamePlayers.Add(gp);
+            }
+            context.SaveChanges();
+            *****/
         }
     }
 }

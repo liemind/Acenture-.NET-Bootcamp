@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20210527181816_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20210527182057_InitialCreate.cs" />
     <Compile Remove="Migrations\20210527182057_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20210528155814_addGamePlayerEntity.cs" />
+    <Compile Remove="Migrations\20210528155814_addGamePlayerEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

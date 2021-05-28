@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 
 
 namespace Salvo.Models
@@ -10,5 +12,7 @@ namespace Salvo.Models
         public long Id { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
+
+        List<GamePlayer> GamePlayers { get; set; }
     }
 }
