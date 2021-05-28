@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -11,5 +12,6 @@ namespace Salvo.Repositories
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
+        IQueryable<T> FindAll(Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
     }
 }

@@ -6,5 +6,6 @@ namespace Salvo.Repositories
     public interface IGameRepository : IRepositoryBase<Game>
     {
         IEnumerable<Game> GetAllGames();
+        IEnumerable<Game> GetAllGamesWithPlayers();
     }
 }
