@@ -13,6 +13,6 @@ namespace Salvo.Models
         [Required]
         public DateTime CreationDate { get; set; }
 
-        List<GamePlayer> GamePlayers { get; set; }
+        public ICollection<GamePlayer> GamePlayers { get; set; }
     }
 }
