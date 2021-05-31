@@ -77,6 +77,66 @@ namespace Salvo.Models.Data
                 context.SaveChanges();
             }
 
+            if (!context.Ships.Any())
+            {
+                GamePlayer gp1 = context.GamePlayers.Find(1L);
+                GamePlayer gp2 = context.GamePlayers.Find(2L);
+                GamePlayer gp3 = context.GamePlayers.Find(3L);
+                GamePlayer gp4 = context.GamePlayers.Find(4L);
+
+                var ships = new Ship[]
+                {
+                    new Ship { GamePlayer=gp1 },
+                    new Ship { GamePlayer=gp1 },
+                    new Ship { GamePlayer=gp3 },
+                    new Ship { GamePlayer=gp1 },
+                    new Ship { GamePlayer=gp1 },
+                    new Ship { GamePlayer=gp2 },
+                    new Ship { GamePlayer=gp2 },
+                    new Ship { GamePlayer=gp4 }
+                };
+
+                foreach (Ship s in ships)
+                {
+                    context.Ships.Add(s);
+                }
+                context.SaveChanges();
+            }
+
+            if (!context.ShipLocations.Any())
+            {
+                Ship ship1 = context.Ships.Find(1L);
+                Ship ship2 = context.Ships.Find(1L);
+                Ship ship3 = context.Ships.Find(1L);
+                Ship ship4 = context.Ships.Find(1L);
+                //Ship ship5 = context.Ships.Find(1L);
+                //Ship ship6 = context.Ships.Find(1L);
+                //Ship ship8 = context.Ships.Find(1L);
+
+                var shipLocations = new ShipLocation[]
+                {
+                    new ShipLocation { Location="H2", Ship=ship1 },
+                    new ShipLocation { Location="H3", Ship=ship1 },
+                    new ShipLocation { Location="H4", Ship=ship1 },
+
+                    new ShipLocation { Location="B4", Ship=ship2 },
+                    new ShipLocation { Location="B5", Ship=ship2 },
+
+                    new ShipLocation { Location="B5", Ship=ship3 },
+                    new ShipLocation { Location="C5", Ship=ship3 },
+                    new ShipLocation { Location="D5", Ship=ship3 },
+
+                    new ShipLocation { Location="F1", Ship=ship4 },
+                    new ShipLocation { Location="F2", Ship=ship4 },
+                };
+
+                foreach (ShipLocation sl in shipLocations)
+                {
+                    context.ShipLocations.Add(sl);
+                }
+                context.SaveChanges();
+            }
+
         }
     }
 }

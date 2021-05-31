@@ -21,5 +21,7 @@ namespace Salvo.Models
         [ForeignKey("PlayerId")]
         public Player Player { get; set; }
 
+        public ICollection<Ship> Ships { get; set; }
+
     }
 }

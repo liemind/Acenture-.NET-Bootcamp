@@ -10,8 +10,8 @@ using Salvo.Models;
 namespace Salvo.Migrations
 {
     [DbContext(typeof(SalvoContext))]
-    [Migration("20210528210847_addGameEntity")]
-    partial class addGameEntity
+    [Migration("20210531214033_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,38 @@ namespace Salvo.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("Salvo.Models.Ship", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("GamePlayerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GamePlayerId");
+
+                    b.ToTable("Ships");
+                });
+
+            modelBuilder.Entity("Salvo.Models.ShipLocation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Location");
+
+                    b.Property<long>("ShipId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipId");
+
+                    b.ToTable("ShipLocations");
+                });
+
             modelBuilder.Entity("Salvo.Models.GamePlayer", b =>
                 {
                     b.HasOne("Salvo.Models.Game", "Game")
@@ -79,6 +111,22 @@ namespace Salvo.Migrations
                     b.HasOne("Salvo.Models.Player", "Player")
                         .WithMany("GamePlayers")
                         .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Salvo.Models.Ship", b =>
+                {
+                    b.HasOne("Salvo.Models.GamePlayer", "GamePlayer")
+                        .WithMany("Ships")
+                        .HasForeignKey("GamePlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Salvo.Models.ShipLocation", b =>
+                {
+                    b.HasOne("Salvo.Models.Ship", "Ship")
+                        .WithMany("Locations")
+                        .HasForeignKey("ShipId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
