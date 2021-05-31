@@ -9,6 +9,6 @@ namespace Salvo.Models.DTO
     {
         public long Id { get; set; }
         public DateTime JoinDate { get; set; }
-        public PlayerDTO PlayerDTO { get; set; }
+        public PlayerDTO player { get; set; }
     }
 }

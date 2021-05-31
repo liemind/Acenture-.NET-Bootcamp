@@ -24,24 +24,24 @@ namespace Salvo.Controllers
         {
             try
             {
-                var gameplayer = _repository.GetAllGamesWithPlayers()
-                .Select(gdto => new GameDTO
+                var gamer = _repository.GetAllGamesWithPlayers()
+                .Select(g => new GameDTO
                 {
-                    Id = gdto.Id,
-                    CreationDate = gdto.CreationDate,
-                    GamePlayers = gdto.GamePlayers.Select(
+                    Id = g.Id,
+                    CreationDate = g.CreationDate,
+                    GamePlayers = g.GamePlayers.Select(
                         gp => new GamePlayerDTO
                         {
                             Id = gp.Id,
                             JoinDate = gp.JoinDate,
-                            PlayerDTO = new PlayerDTO
+                            player = new PlayerDTO
                             {
                                 Id = gp.Player.Id,
                                 Email = gp.Player.Email
                             }
                         }).ToList()
                 });
-                return Ok(gameplayer);
+                return Ok(gamer);
             }
             catch (Exception ex)
             {
