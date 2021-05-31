@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Salvo.Models
 {
@@ -8,5 +9,6 @@ namespace Salvo.Models
         public long Id { get; set; }
         [Required]
         public string Email { get; set; }
+        public ICollection<GamePlayer> GamePlayers { get; set; }
     }
 }
