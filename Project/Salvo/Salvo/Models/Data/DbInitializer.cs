@@ -172,7 +172,7 @@ namespace Salvo.Models.Data
                     new Salvo { GamePlayer=gp3, Turn=3 },
                     new Salvo { GamePlayer=gp4, Turn=1 },
                     new Salvo { GamePlayer=gp1, Turn=2 },
-                    new Salvo { GamePlayer=gp1, Turn=3 },
+                    new Salvo { GamePlayer=gp2, Turn=3 },
                 };
 
                 foreach (Salvo s in salvos)
