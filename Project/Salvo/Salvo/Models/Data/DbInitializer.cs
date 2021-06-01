@@ -86,13 +86,13 @@ namespace Salvo.Models.Data
                 var ships = new Ship[]
                 {
                     new Ship { Type="Destroyer", GamePlayer=gp1 },
-                    new Ship { Type="Patrol Boat", GamePlayer=gp1 },
+                    new Ship { Type="PatroalBoat", GamePlayer=gp1 },
                     new Ship { Type="Destroyer", GamePlayer=gp3 },
                     new Ship { Type="Destroyer", GamePlayer=gp2 },
-                    new Ship { Type="Patrol Boat", GamePlayer=gp4 },
+                    new Ship { Type="PatroalBoat", GamePlayer=gp4 },
                     new Ship { Type="Destroyer", GamePlayer=gp2 },
                     new Ship { Type="Submarine", GamePlayer=gp2 },
-                    new Ship { Type="Patrol Boat", GamePlayer=gp4 }
+                    new Ship { Type="PatroalBoat", GamePlayer=gp4 }
                 };
 
                 foreach (Ship s in ships)
