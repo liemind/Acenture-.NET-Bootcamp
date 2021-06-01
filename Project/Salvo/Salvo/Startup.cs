@@ -33,7 +33,9 @@ namespace Salvo
             options.UseSqlServer(Configuration.GetConnectionString("SalvoDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //scopes repositorio
             services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IGamePlayerRepository, GamePlayerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

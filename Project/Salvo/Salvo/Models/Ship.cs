@@ -11,7 +11,7 @@ namespace Salvo.Models
     {
         [Key]
         public long Id { get; set; }
-        //public string Type { get; set; }
+        public string Type { get; set; }
         public long GamePlayerId { get; set; }
         [ForeignKey("GamePlayerId")]
         public GamePlayer GamePlayer { get; set; }
