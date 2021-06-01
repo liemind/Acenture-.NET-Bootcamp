@@ -75,6 +75,8 @@ namespace Salvo.Migrations
 
                     b.Property<long>("GamePlayerId");
 
+                    b.Property<string>("Type");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GamePlayerId");

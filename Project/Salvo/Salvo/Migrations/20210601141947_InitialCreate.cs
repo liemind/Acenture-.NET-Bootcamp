@@ -67,6 +67,7 @@ namespace Salvo.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Type = table.Column<string>(nullable: true),
                     GamePlayerId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>

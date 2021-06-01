@@ -86,14 +86,14 @@ namespace Salvo.Models.Data
 
                 var ships = new Ship[]
                 {
-                    new Ship { GamePlayer=gp1 },
-                    new Ship { GamePlayer=gp1 },
-                    new Ship { GamePlayer=gp3 },
-                    new Ship { GamePlayer=gp1 },
-                    new Ship { GamePlayer=gp1 },
-                    new Ship { GamePlayer=gp2 },
-                    new Ship { GamePlayer=gp2 },
-                    new Ship { GamePlayer=gp4 }
+                    new Ship { Type="Destroyer", GamePlayer=gp1 },
+                    new Ship { Type="Patrol Boat", GamePlayer=gp1 },
+                    new Ship { Type="Destroyer", GamePlayer=gp3 },
+                    new Ship { Type="Destroyer", GamePlayer=gp2 },
+                    new Ship { Type="Patrol Boat", GamePlayer=gp4 },
+                    new Ship { Type="Destroyer", GamePlayer=gp2 },
+                    new Ship { Type="Submarine", GamePlayer=gp2 },
+                    new Ship { Type="Patrol Boat", GamePlayer=gp4 }
                 };
 
                 foreach (Ship s in ships)
@@ -106,12 +106,13 @@ namespace Salvo.Models.Data
             if (!context.ShipLocations.Any())
             {
                 Ship ship1 = context.Ships.Find(1L);
-                Ship ship2 = context.Ships.Find(1L);
-                Ship ship3 = context.Ships.Find(1L);
-                Ship ship4 = context.Ships.Find(1L);
-                //Ship ship5 = context.Ships.Find(1L);
-                //Ship ship6 = context.Ships.Find(1L);
-                //Ship ship8 = context.Ships.Find(1L);
+                Ship ship2 = context.Ships.Find(2L);
+                Ship ship3 = context.Ships.Find(3L);
+                Ship ship4 = context.Ships.Find(4L);
+                Ship ship5 = context.Ships.Find(5L);
+                Ship ship6 = context.Ships.Find(6L);
+                Ship ship7 = context.Ships.Find(7L);
+                Ship ship8 = context.Ships.Find(8L);
 
                 var shipLocations = new ShipLocation[]
                 {
@@ -122,12 +123,27 @@ namespace Salvo.Models.Data
                     new ShipLocation { Location="B4", Ship=ship2 },
                     new ShipLocation { Location="B5", Ship=ship2 },
 
+                    new ShipLocation { Location="B5", Ship=ship4 },
+                    new ShipLocation { Location="C5", Ship=ship4 },
+                    new ShipLocation { Location="D5", Ship=ship4 },
+
+                    new ShipLocation { Location="F1", Ship=ship5 },
+                    new ShipLocation { Location="F2", Ship=ship5 },
+
                     new ShipLocation { Location="B5", Ship=ship3 },
                     new ShipLocation { Location="C5", Ship=ship3 },
                     new ShipLocation { Location="D5", Ship=ship3 },
 
-                    new ShipLocation { Location="F1", Ship=ship4 },
-                    new ShipLocation { Location="F2", Ship=ship4 },
+                    new ShipLocation { Location="A2", Ship=ship6 },
+                    new ShipLocation { Location="A3", Ship=ship6 },
+                    new ShipLocation { Location="A4", Ship=ship6 },
+
+                    new ShipLocation { Location="B5", Ship=ship7 },
+                    new ShipLocation { Location="C5", Ship=ship7 },
+                    new ShipLocation { Location="D5", Ship=ship7 },
+
+                    new ShipLocation { Location="C6", Ship=ship8 },
+                    new ShipLocation { Location="C7", Ship=ship8 }
                 };
 
                 foreach (ShipLocation sl in shipLocations)

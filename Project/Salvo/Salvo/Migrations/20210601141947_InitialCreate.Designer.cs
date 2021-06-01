@@ -10,7 +10,7 @@ using Salvo.Models;
 namespace Salvo.Migrations
 {
     [DbContext(typeof(SalvoContext))]
-    [Migration("20210531214033_InitialCreate")]
+    [Migration("20210601141947_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,8 @@ namespace Salvo.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("GamePlayerId");
+
+                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 
