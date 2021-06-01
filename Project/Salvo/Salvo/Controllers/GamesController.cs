@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
 using System.Linq;
-using Salvo.Models.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
+using System;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,26 +35,27 @@ namespace Salvo.Controllers
                 var gp = _repository.GetGamePlayerView(id);
                 GameViewDTO gameView = new GameViewDTO
                 {
-                    Id=gp.Id,
-                    CreationDate=gp.JoinDate,
-                    gamePlayers= gp.Game.GamePlayers.Select(
+                    Id = gp.Id,
+                    CreationDate = gp.JoinDate,
+                    gamePlayers = gp.Game.GamePlayers.Select(
                         gpp => new GamePlayerDTO
                         {
-                            Id=gpp.Id,
-                            JoinDate=gpp.JoinDate,
+                            Id = gpp.Id,
+                            JoinDate = gpp.JoinDate,
                             player = new PlayerDTO
                             {
                                 Id = gp.Player.Id,
                                 Email = gp.Player.Email
                             }
                         }).ToList(),
-                    ships=gp.Ships.Select(
+                    ships = gp.Ships.Select(
                         ship => new ShipDTO
                         {
                             Id = ship.Id,
                             Type = ship.Type,
-                            Locations = ship.Locations.Select( 
-                                shlocation => new ShipLocationDTO {
+                            Locations = ship.Locations.Select(
+                                shlocation => new ShipLocationDTO
+                                {
                                     Id = shlocation.Id,
                                     Location = shlocation.Location
                                 }).ToList()
