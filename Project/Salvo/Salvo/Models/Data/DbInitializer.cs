@@ -76,6 +76,7 @@ namespace Salvo.Models.Data
                 context.SaveChanges();
             }
 
+            // Ships
             if (!context.Ships.Any())
             {
                 GamePlayer gp1 = context.GamePlayers.Find(1L);
@@ -102,6 +103,7 @@ namespace Salvo.Models.Data
                 context.SaveChanges();
             }
 
+            // Ship Locations
             if (!context.ShipLocations.Any())
             {
                 Ship ship1 = context.Ships.Find(1L);
@@ -148,6 +150,76 @@ namespace Salvo.Models.Data
                 foreach (ShipLocation sl in shipLocations)
                 {
                     context.ShipLocations.Add(sl);
+                }
+                context.SaveChanges();
+            }
+
+            // Salvo
+            if (!context.Salvos.Any())
+            {
+                GamePlayer gp1 = context.GamePlayers.Find(1L);
+                GamePlayer gp2 = context.GamePlayers.Find(2L);
+                GamePlayer gp3 = context.GamePlayers.Find(3L);
+                GamePlayer gp4 = context.GamePlayers.Find(4L);
+
+                var salvos = new Salvo[]
+                {
+                    new Salvo { GamePlayer=gp1, Turn=1 },
+                    new Salvo { GamePlayer=gp2, Turn=2 },
+                    new Salvo { GamePlayer=gp3, Turn=3 },
+                    new Salvo { GamePlayer=gp4, Turn=1 },
+                };
+
+                foreach (Salvo s in salvos)
+                {
+                    context.Salvos.Add(s);
+                }
+                context.SaveChanges();
+            }
+
+            // Salvo Locations
+            if (!context.SalvoLocations.Any())
+            {
+                Salvo salvo1 = context.Salvos.Find(1L);
+                Salvo salvo2 = context.Salvos.Find(2L);
+                Salvo salvo3 = context.Salvos.Find(3L);
+                Salvo salvo4 = context.Salvos.Find(4L);
+
+                var salvoLocations = new SalvoLocation[]
+                {
+                    new SalvoLocation { Cell="H2", Salvo=salvo1 },
+                    new SalvoLocation { Cell="H3", Salvo=salvo1 },
+                    new SalvoLocation { Cell="H4", Salvo=salvo1 },
+
+                    new SalvoLocation { Cell="B4", Salvo=salvo2 },
+                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
+
+                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
+                    new SalvoLocation { Cell="C5", Salvo=salvo2 },
+                    new SalvoLocation { Cell="D5", Salvo=salvo2 },
+
+                    new SalvoLocation { Cell="F1", Salvo=salvo3 },
+                    new SalvoLocation { Cell="F2", Salvo=salvo3 },
+
+                    new SalvoLocation { Cell="B5", Salvo=salvo3 },
+                    new SalvoLocation { Cell="C5", Salvo=salvo3 },
+                    new SalvoLocation { Cell="D5", Salvo=salvo3 },
+
+                    new SalvoLocation { Cell="A2", Salvo=salvo4 },
+                    new SalvoLocation { Cell="A3", Salvo=salvo4 },
+                    new SalvoLocation { Cell="A4", Salvo=salvo4 },
+
+                    new SalvoLocation { Cell="B5", Salvo=salvo4 },
+                    new SalvoLocation { Cell="C5", Salvo=salvo4 },
+                    new SalvoLocation { Cell="D5", Salvo=salvo4 },
+
+                    new SalvoLocation { Cell="C6", Salvo=salvo1 },
+                    new SalvoLocation { Cell="C7", Salvo=salvo1 }
+                };
+
+                foreach (SalvoLocation sl in salvoLocations)
+                {
+                    context.SalvoLocations.Add(sl);
                 }
                 context.SaveChanges();
             }
