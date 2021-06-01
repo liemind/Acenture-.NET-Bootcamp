@@ -9,5 +9,6 @@ namespace Salvo.Models.DTO
         public DateTime CreationDate { get; set; }
         public ICollection<GamePlayerDTO> gamePlayers { get; set; }
         public ICollection<ShipDTO> ships { get; set; }
+        public ICollection<SalvoDTO> salvos { get; set; }
     }
 }

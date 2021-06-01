@@ -14,7 +14,8 @@ namespace Salvo.Models.Data
                     new Player{Email="j.bauer@ctu.gov"},
                     new Player{Email="c.obrian@ctu.gov"},
                     new Player{Email="kim_bauer@gmail.com"},
-                    new Player{Email="t.almeida@ctu.gov"}
+                    new Player{Email="t.almeida@ctu.gov"},
+                    new Player{Email="t.perez@ctu.gov"}
                 };
 
                 foreach (Player p in players)
@@ -54,6 +55,7 @@ namespace Salvo.Models.Data
                 Player player2 = context.Players.Find(2L);
                 Player player3 = context.Players.Find(3L);
                 Player player4 = context.Players.Find(4L);
+                Player player5 = context.Players.Find(5L);
 
                 var gameplayers = new GamePlayer[]
                 {
@@ -64,9 +66,10 @@ namespace Salvo.Models.Data
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player4 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player4 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player3 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player2 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player3 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player1 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player2 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player5 }
                 };
 
                 foreach (GamePlayer gp in gameplayers)
@@ -168,6 +171,8 @@ namespace Salvo.Models.Data
                     new Salvo { GamePlayer=gp2, Turn=2 },
                     new Salvo { GamePlayer=gp3, Turn=3 },
                     new Salvo { GamePlayer=gp4, Turn=1 },
+                    new Salvo { GamePlayer=gp1, Turn=2 },
+                    new Salvo { GamePlayer=gp1, Turn=3 },
                 };
 
                 foreach (Salvo s in salvos)

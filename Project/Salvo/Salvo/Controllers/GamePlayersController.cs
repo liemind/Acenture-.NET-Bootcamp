@@ -44,8 +44,8 @@ namespace Salvo.Controllers
                             JoinDate = gpp.JoinDate,
                             player = new PlayerDTO
                             {
-                                Id = gp.Player.Id,
-                                Email = gp.Player.Email
+                                Id = gpp.Player.Id,
+                                Email = gpp.Player.Email
                             }
                         }).ToList(),
                     ships = gp.Ships.Select(
@@ -59,6 +59,22 @@ namespace Salvo.Controllers
                                     Id = shlocation.Id,
                                     Location = shlocation.Location
                                 }).ToList()
+                        }).ToList(),
+                    salvos = gp.Salvos.Select(
+                        salvo => new SalvoDTO { 
+                            Id = salvo.Id,
+                            Turn = salvo.Turn,
+                            player = new PlayerDTO
+                            {
+                                Id = salvo.GamePlayer.Player.Id,
+                                Email = salvo.GamePlayer.Player.Email
+                            },
+                            locations = salvo.Locations.Select(
+                                    salvol => new SalvoLocationDTO 
+                                    {
+                                        Id = salvol.Id,
+                                        Location = salvol.Cell
+                                    }).ToList()
                         }).ToList()
                 };
 
