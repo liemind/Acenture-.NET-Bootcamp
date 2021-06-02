@@ -219,7 +219,7 @@ namespace Salvo.Models.Data
                             new ShipLocation { Location = "G6"},
                             new ShipLocation { Location = "H6"}
                             },
-                    }
+                    },
                 };
 
                 foreach (Ship ship in ships)
