@@ -341,15 +341,42 @@ namespace Salvo.Models.Data
                     context.Salvos.Add(salvo);
                 }
 
-                foreach (Salvo s in salvos)
-                {
-                    context.Salvos.Add(s);
-                }
                 context.SaveChanges();
             }
 
             // Scores
+            if (!context.Scores.Any())
+            {
+                Game game1 = context.Games.Find(1L);
+                Game game2 = context.Games.Find(2L);
+                Game game3 = context.Games.Find(3L);
+                Game game4 = context.Games.Find(4L);
 
+                Player player1 = context.Players.Find(1L);
+                Player player2 = context.Players.Find(2L);
+                Player player3 = context.Players.Find(3L);
+                Player player4 = context.Players.Find(4L);
+                Player player5 = context.Players.Find(5L);
+
+                var scores = new Score[]
+                {
+                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game1, Player=player1 },
+                    new Score {Point=2.0, FinishDate=DateTime.Now, Game=game1, Player=player2 },
+                    new Score {Point=0, FinishDate=DateTime.Now, Game=game2, Player=player1 },
+                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game2, Player=player3 },
+                    new Score {Point=1.5, FinishDate=DateTime.Now, Game=game3, Player=player5 },
+                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game3, Player=player4 },
+                    new Score {Point=2.0, FinishDate=DateTime.Now, Game=game4, Player=player3 },
+                    new Score {Point=1.5, FinishDate=DateTime.Now, Game=game4, Player=player4 }
+                };
+
+                foreach (Score score in scores)
+                {
+                    context.Scores.Add(score);
+                }
+
+                context.SaveChanges();
+            }
         }
     }
 }
