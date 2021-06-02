@@ -219,7 +219,7 @@ namespace Salvo.Models.Data
                             new ShipLocation { Location = "G6"},
                             new ShipLocation { Location = "H6"}
                             },
-                    },
+                    }
                 };
 
                 foreach (Ship ship in ships)
@@ -237,16 +237,109 @@ namespace Salvo.Models.Data
                 GamePlayer gp2 = context.GamePlayers.Find(2L);
                 GamePlayer gp3 = context.GamePlayers.Find(3L);
                 GamePlayer gp4 = context.GamePlayers.Find(4L);
+                GamePlayer gp5 = context.GamePlayers.Find(5L);
+                GamePlayer gp6 = context.GamePlayers.Find(6L);
+                GamePlayer gp7 = context.GamePlayers.Find(7L);
+                GamePlayer gp8 = context.GamePlayers.Find(8L);
 
                 var salvos = new Salvo[]
                 {
-                    new Salvo { GamePlayer=gp1, Turn=1 },
-                    new Salvo { GamePlayer=gp2, Turn=2 },
-                    new Salvo { GamePlayer=gp3, Turn=3 },
-                    new Salvo { GamePlayer=gp4, Turn=1 },
-                    new Salvo { GamePlayer=gp1, Turn=2 },
-                    new Salvo { GamePlayer=gp2, Turn=3 },
+                    new Salvo{ Turn = 1, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "B5"},
+                        new SalvoLocation { Cell = "C5"},
+                        new SalvoLocation { Cell = "F1"},
+                    } },
+                    new Salvo{ Turn = 2, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "F2"},
+                        new SalvoLocation { Cell = "F5"},
+                    } },
+                    new Salvo{ Turn = 1, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "B4"},
+                        new SalvoLocation { Cell = "B5"},
+                        new SalvoLocation { Cell = "B6"},
+                    } },
+                    new Salvo{ Turn = 2, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "E1"},
+                        new SalvoLocation { Cell = "H3"},
+                        new SalvoLocation { Cell = "A2"},
+                    } },
+                    new Salvo{Turn = 1, GamePlayer = gp3, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "A4" },
+                            new SalvoLocation { Cell = "G6" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp3, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "H6" }
+                        }
+                    },
+                     new Salvo{Turn = 1, GamePlayer = gp4, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "B5" },
+                            new SalvoLocation { Cell = "D5" },
+                            new SalvoLocation { Cell = "C7" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp4, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "C5" },
+                            new SalvoLocation { Cell = "C6" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp5, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "G6" },
+                            new SalvoLocation { Cell = "H6" },
+                            new SalvoLocation { Cell = "A4" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp5, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "D8" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp6, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "H1" },
+                            new SalvoLocation { Cell = "H2" },
+                            new SalvoLocation { Cell = "H3" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp6, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "E1" },
+                            new SalvoLocation { Cell = "F2" },
+                            new SalvoLocation { Cell = "G3" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp7, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "A4" },
+                            new SalvoLocation { Cell = "F7" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp7, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "G6" },
+                            new SalvoLocation { Cell = "H6" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp8, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "B5" },
+                            new SalvoLocation { Cell = "C6" },
+                            new SalvoLocation { Cell = "H1" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp8, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "C5" },
+                            new SalvoLocation { Cell = "C7" },
+                            new SalvoLocation { Cell = "D5" }
+                        }
+                    },
+
                 };
+
+                foreach (Salvo salvo in salvos)
+                {
+                    context.Salvos.Add(salvo);
+                }
 
                 foreach (Salvo s in salvos)
                 {
@@ -255,52 +348,7 @@ namespace Salvo.Models.Data
                 context.SaveChanges();
             }
 
-            // Salvo Locations
-            if (!context.SalvoLocations.Any())
-            {
-                Salvo salvo1 = context.Salvos.Find(1L);
-                Salvo salvo2 = context.Salvos.Find(2L);
-                Salvo salvo3 = context.Salvos.Find(3L);
-                Salvo salvo4 = context.Salvos.Find(4L);
-
-                var salvoLocations = new SalvoLocation[]
-                {
-                    new SalvoLocation { Cell="H2", Salvo=salvo1 },
-                    new SalvoLocation { Cell="H3", Salvo=salvo1 },
-                    new SalvoLocation { Cell="H4", Salvo=salvo1 },
-
-                    new SalvoLocation { Cell="B4", Salvo=salvo2 },
-                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo2 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo2 },
-
-                    new SalvoLocation { Cell="F1", Salvo=salvo3 },
-                    new SalvoLocation { Cell="F2", Salvo=salvo3 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo3 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo3 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo3 },
-
-                    new SalvoLocation { Cell="A2", Salvo=salvo4 },
-                    new SalvoLocation { Cell="A3", Salvo=salvo4 },
-                    new SalvoLocation { Cell="A4", Salvo=salvo4 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo4 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo4 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo4 },
-
-                    new SalvoLocation { Cell="C6", Salvo=salvo1 },
-                    new SalvoLocation { Cell="C7", Salvo=salvo1 }
-                };
-
-                foreach (SalvoLocation sl in salvoLocations)
-                {
-                    context.SalvoLocations.Add(sl);
-                }
-                context.SaveChanges();
-            }
+            // Scores
 
         }
     }
