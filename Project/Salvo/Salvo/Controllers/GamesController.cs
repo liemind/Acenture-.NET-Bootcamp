@@ -38,7 +38,8 @@ namespace Salvo.Controllers
                             {
                                 Id = gp.Player.Id,
                                 Email = gp.Player.Email
-                            }
+                            },
+                            Point = gp.Player.GetScore(g).Point
                         }).ToList()
                 });
                 return Ok(gamer);

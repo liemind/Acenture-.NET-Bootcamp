@@ -101,6 +101,29 @@ namespace Salvo.Migrations
                     b.ToTable("SalvoLocations");
                 });
 
+            modelBuilder.Entity("Salvo.Models.Score", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("FinishDate");
+
+                    b.Property<long>("GameId");
+
+                    b.Property<long>("PlayerId");
+
+                    b.Property<double>("Point");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Scores");
+                });
+
             modelBuilder.Entity("Salvo.Models.Ship", b =>
                 {
                     b.Property<long>("Id")
@@ -161,6 +184,19 @@ namespace Salvo.Migrations
                     b.HasOne("Salvo.Models.Salvo", "Salvo")
                         .WithMany("Locations")
                         .HasForeignKey("SalvoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Salvo.Models.Score", b =>
+                {
+                    b.HasOne("Salvo.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Salvo.Models.Player", "Player")
+                        .WithMany("Scores")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
