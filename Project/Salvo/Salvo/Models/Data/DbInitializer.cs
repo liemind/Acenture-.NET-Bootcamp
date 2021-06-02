@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Salvo.Models.Data
 {
@@ -30,10 +31,10 @@ namespace Salvo.Models.Data
             {
                 var games = new Game[]
                 {
-                    new Game{CreationDate=System.DateTime.Parse("2019-01-01T18:32:49.8716178")},
-                    new Game{CreationDate=System.DateTime.Parse("2019-01-01T19:32:49.8725558")},
-                    new Game{CreationDate=System.DateTime.Parse("2019-01-01T20:32:49.8725564")},
-                    new Game{CreationDate=System.DateTime.Parse("2019-01-01T21:32:49.8725565")}
+                    new Game{CreationDate=DateTime.Now},
+                    new Game{CreationDate=DateTime.Now.AddHours(1)},
+                    new Game{CreationDate=DateTime.Now.AddHours(2)},
+                    new Game{CreationDate=DateTime.Now.AddHours(3)}
                 };
 
                 foreach (Game g in games)
@@ -60,16 +61,13 @@ namespace Salvo.Models.Data
                 var gameplayers = new GamePlayer[]
                 {
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player1 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player3 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player2 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player1 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player4 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player4 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player3 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player3 },
                     new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player1 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player2 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player5 }
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player3 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player5 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player4 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player3 },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player4 }
                 };
 
                 foreach (GamePlayer gp in gameplayers)
@@ -82,78 +80,153 @@ namespace Salvo.Models.Data
             // Ships
             if (!context.Ships.Any())
             {
-                GamePlayer gp1 = context.GamePlayers.Find(1L);
-                GamePlayer gp2 = context.GamePlayers.Find(2L);
-                GamePlayer gp3 = context.GamePlayers.Find(3L);
-                GamePlayer gp4 = context.GamePlayers.Find(4L);
+                GamePlayer gamePlayer1 = context.GamePlayers.Find(1L);
+                GamePlayer gamePlayer2 = context.GamePlayers.Find(2L);
+                GamePlayer gamePlayer3 = context.GamePlayers.Find(3L);
+                GamePlayer gamePlayer4 = context.GamePlayers.Find(4L);
+                GamePlayer gamePlayer5 = context.GamePlayers.Find(5L);
+                GamePlayer gamePlayer6 = context.GamePlayers.Find(6L);
+                GamePlayer gamePlayer7 = context.GamePlayers.Find(7L);
+                GamePlayer gamePlayer8 = context.GamePlayers.Find(8L);
 
                 var ships = new Ship[]
                 {
-                    new Ship { Type="Destroyer", GamePlayer=gp1 },
-                    new Ship { Type="PatroalBoat", GamePlayer=gp1 },
-                    new Ship { Type="Destroyer", GamePlayer=gp3 },
-                    new Ship { Type="Destroyer", GamePlayer=gp2 },
-                    new Ship { Type="PatroalBoat", GamePlayer=gp4 },
-                    new Ship { Type="Destroyer", GamePlayer=gp2 },
-                    new Ship { Type="Submarine", GamePlayer=gp2 },
-                    new Ship { Type="PatroalBoat", GamePlayer=gp4 }
+                    new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer1, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "H2"},
+                            new ShipLocation { Location = "H3"},
+                            new ShipLocation { Location = "H4"},
+                            },
+
+                    },
+                    new Ship{
+                            Type="Submarine", GamePlayer = gamePlayer1, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "E1"},
+                            new ShipLocation { Location = "F1"},
+                            new ShipLocation { Location = "G1"},
+                            },
+
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer1, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B4"},
+                            new ShipLocation { Location = "B5"}
+                            },
+                    },
+                     new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer2, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"},
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer2, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "F1"},
+                            new ShipLocation { Location = "F2"}
+                            },
+
+                    },
+                    new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer3, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"},
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer3, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "C6"},
+                            new ShipLocation { Location = "C7"}
+                            },
+                    },
+                     new Ship{
+                            Type="Submarine", GamePlayer = gamePlayer4, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "A2"},
+                            new ShipLocation { Location = "A3"},
+                            new ShipLocation { Location = "A4"},
+                            },
+
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer4, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "G6"},
+                            new ShipLocation { Location = "H6"}
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer5, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"}
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer5, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "C6"},
+                            new ShipLocation { Location = "C7"}
+                            },
+                    },
+                    new Ship{
+                            Type="Submarine", GamePlayer = gamePlayer5, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "A2"},
+                            new ShipLocation { Location = "A3"},
+                            new ShipLocation { Location = "A4"},
+                            },
+                    },
+                    new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer6, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"},
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer6, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "G6"},
+                            new ShipLocation { Location = "H6"}
+                            },
+                    },
+                    new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer7, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"},
+                            },
+                    },
+                    new Ship{
+                            Type="Destroyer", GamePlayer = gamePlayer8, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "B5"},
+                            new ShipLocation { Location = "C5"},
+                            new ShipLocation { Location = "D5"},
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer8, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "C6"},
+                            new ShipLocation { Location = "C7"}
+                            },
+                    },
+                    new Ship{
+                            Type="Submarine", GamePlayer = gamePlayer8, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "A2"},
+                            new ShipLocation { Location = "A3"},
+                            new ShipLocation { Location = "A4"},
+                            },
+                    },
+                    new Ship{
+                            Type="PatroalBoat", GamePlayer = gamePlayer6, Locations = new ShipLocation[]{
+                            new ShipLocation { Location = "G6"},
+                            new ShipLocation { Location = "H6"}
+                            },
+                    },
                 };
 
-                foreach (Ship s in ships)
+                foreach (Ship ship in ships)
                 {
-                    context.Ships.Add(s);
+                    context.Ships.Add(ship);
                 }
-                context.SaveChanges();
-            }
 
-            // Ship Locations
-            if (!context.ShipLocations.Any())
-            {
-                Ship ship1 = context.Ships.Find(1L);
-                Ship ship2 = context.Ships.Find(2L);
-                Ship ship3 = context.Ships.Find(3L);
-                Ship ship4 = context.Ships.Find(4L);
-                Ship ship5 = context.Ships.Find(5L);
-                Ship ship6 = context.Ships.Find(6L);
-                Ship ship7 = context.Ships.Find(7L);
-                Ship ship8 = context.Ships.Find(8L);
-
-                var shipLocations = new ShipLocation[]
-                {
-                    new ShipLocation { Location="H2", Ship=ship1 },
-                    new ShipLocation { Location="H3", Ship=ship1 },
-                    new ShipLocation { Location="H4", Ship=ship1 },
-
-                    new ShipLocation { Location="B4", Ship=ship2 },
-                    new ShipLocation { Location="B5", Ship=ship2 },
-
-                    new ShipLocation { Location="B5", Ship=ship4 },
-                    new ShipLocation { Location="C5", Ship=ship4 },
-                    new ShipLocation { Location="D5", Ship=ship4 },
-
-                    new ShipLocation { Location="F1", Ship=ship5 },
-                    new ShipLocation { Location="F2", Ship=ship5 },
-
-                    new ShipLocation { Location="B5", Ship=ship3 },
-                    new ShipLocation { Location="C5", Ship=ship3 },
-                    new ShipLocation { Location="D5", Ship=ship3 },
-
-                    new ShipLocation { Location="A2", Ship=ship6 },
-                    new ShipLocation { Location="A3", Ship=ship6 },
-                    new ShipLocation { Location="A4", Ship=ship6 },
-
-                    new ShipLocation { Location="B5", Ship=ship7 },
-                    new ShipLocation { Location="C5", Ship=ship7 },
-                    new ShipLocation { Location="D5", Ship=ship7 },
-
-                    new ShipLocation { Location="C6", Ship=ship8 },
-                    new ShipLocation { Location="C7", Ship=ship8 }
-                };
-
-                foreach (ShipLocation sl in shipLocations)
-                {
-                    context.ShipLocations.Add(sl);
-                }
                 context.SaveChanges();
             }
 
@@ -164,16 +237,109 @@ namespace Salvo.Models.Data
                 GamePlayer gp2 = context.GamePlayers.Find(2L);
                 GamePlayer gp3 = context.GamePlayers.Find(3L);
                 GamePlayer gp4 = context.GamePlayers.Find(4L);
+                GamePlayer gp5 = context.GamePlayers.Find(5L);
+                GamePlayer gp6 = context.GamePlayers.Find(6L);
+                GamePlayer gp7 = context.GamePlayers.Find(7L);
+                GamePlayer gp8 = context.GamePlayers.Find(8L);
 
                 var salvos = new Salvo[]
                 {
-                    new Salvo { GamePlayer=gp1, Turn=1 },
-                    new Salvo { GamePlayer=gp2, Turn=2 },
-                    new Salvo { GamePlayer=gp3, Turn=3 },
-                    new Salvo { GamePlayer=gp4, Turn=1 },
-                    new Salvo { GamePlayer=gp1, Turn=2 },
-                    new Salvo { GamePlayer=gp2, Turn=3 },
+                    new Salvo{ Turn = 1, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "B5"},
+                        new SalvoLocation { Cell = "C5"},
+                        new SalvoLocation { Cell = "F1"},
+                    } },
+                    new Salvo{ Turn = 2, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "F2"},
+                        new SalvoLocation { Cell = "F5"},
+                    } },
+                    new Salvo{ Turn = 1, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "B4"},
+                        new SalvoLocation { Cell = "B5"},
+                        new SalvoLocation { Cell = "B6"},
+                    } },
+                    new Salvo{ Turn = 2, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                        new SalvoLocation { Cell = "E1"},
+                        new SalvoLocation { Cell = "H3"},
+                        new SalvoLocation { Cell = "A2"},
+                    } },
+                    new Salvo{Turn = 1, GamePlayer = gp3, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "A4" },
+                            new SalvoLocation { Cell = "G6" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp3, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "H6" }
+                        }
+                    },
+                     new Salvo{Turn = 1, GamePlayer = gp4, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "B5" },
+                            new SalvoLocation { Cell = "D5" },
+                            new SalvoLocation { Cell = "C7" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp4, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "C5" },
+                            new SalvoLocation { Cell = "C6" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp5, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "G6" },
+                            new SalvoLocation { Cell = "H6" },
+                            new SalvoLocation { Cell = "A4" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp5, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "D8" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp6, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "H1" },
+                            new SalvoLocation { Cell = "H2" },
+                            new SalvoLocation { Cell = "H3" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp6, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "E1" },
+                            new SalvoLocation { Cell = "F2" },
+                            new SalvoLocation { Cell = "G3" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp7, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A3" },
+                            new SalvoLocation { Cell = "A4" },
+                            new SalvoLocation { Cell = "F7" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp7, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "A2" },
+                            new SalvoLocation { Cell = "G6" },
+                            new SalvoLocation { Cell = "H6" }
+                        }
+                    },
+                    new Salvo{Turn = 1, GamePlayer = gp8, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "B5" },
+                            new SalvoLocation { Cell = "C6" },
+                            new SalvoLocation { Cell = "H1" }
+                        }
+                    },
+                    new Salvo{Turn = 2, GamePlayer = gp8, Locations = new SalvoLocation[] {
+                            new SalvoLocation { Cell = "C5" },
+                            new SalvoLocation { Cell = "C7" },
+                            new SalvoLocation { Cell = "D5" }
+                        }
+                    },
+
                 };
+
+                foreach (Salvo salvo in salvos)
+                {
+                    context.Salvos.Add(salvo);
+                }
 
                 foreach (Salvo s in salvos)
                 {
@@ -182,52 +348,7 @@ namespace Salvo.Models.Data
                 context.SaveChanges();
             }
 
-            // Salvo Locations
-            if (!context.SalvoLocations.Any())
-            {
-                Salvo salvo1 = context.Salvos.Find(1L);
-                Salvo salvo2 = context.Salvos.Find(2L);
-                Salvo salvo3 = context.Salvos.Find(3L);
-                Salvo salvo4 = context.Salvos.Find(4L);
-
-                var salvoLocations = new SalvoLocation[]
-                {
-                    new SalvoLocation { Cell="H2", Salvo=salvo1 },
-                    new SalvoLocation { Cell="H3", Salvo=salvo1 },
-                    new SalvoLocation { Cell="H4", Salvo=salvo1 },
-
-                    new SalvoLocation { Cell="B4", Salvo=salvo2 },
-                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo2 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo2 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo2 },
-
-                    new SalvoLocation { Cell="F1", Salvo=salvo3 },
-                    new SalvoLocation { Cell="F2", Salvo=salvo3 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo3 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo3 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo3 },
-
-                    new SalvoLocation { Cell="A2", Salvo=salvo4 },
-                    new SalvoLocation { Cell="A3", Salvo=salvo4 },
-                    new SalvoLocation { Cell="A4", Salvo=salvo4 },
-
-                    new SalvoLocation { Cell="B5", Salvo=salvo4 },
-                    new SalvoLocation { Cell="C5", Salvo=salvo4 },
-                    new SalvoLocation { Cell="D5", Salvo=salvo4 },
-
-                    new SalvoLocation { Cell="C6", Salvo=salvo1 },
-                    new SalvoLocation { Cell="C7", Salvo=salvo1 }
-                };
-
-                foreach (SalvoLocation sl in salvoLocations)
-                {
-                    context.SalvoLocations.Add(sl);
-                }
-                context.SaveChanges();
-            }
+            // Scores
 
         }
     }

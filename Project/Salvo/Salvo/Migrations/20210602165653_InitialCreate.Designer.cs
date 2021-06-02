@@ -10,8 +10,8 @@ using Salvo.Models;
 namespace Salvo.Migrations
 {
     [DbContext(typeof(SalvoContext))]
-    [Migration("20210601182431_addSalvoLocationEntity")]
-    partial class addSalvoLocationEntity
+    [Migration("20210602165653_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,7 +161,7 @@ namespace Salvo.Migrations
             modelBuilder.Entity("Salvo.Models.SalvoLocation", b =>
                 {
                     b.HasOne("Salvo.Models.Salvo", "Salvo")
-                        .WithMany("SalvoLocations")
+                        .WithMany("Locations")
                         .HasForeignKey("SalvoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -159,7 +159,7 @@ namespace Salvo.Migrations
             modelBuilder.Entity("Salvo.Models.SalvoLocation", b =>
                 {
                     b.HasOne("Salvo.Models.Salvo", "Salvo")
-                        .WithMany("SalvoLocations")
+                        .WithMany("Locations")
                         .HasForeignKey("SalvoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
