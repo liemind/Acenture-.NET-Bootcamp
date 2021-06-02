@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
 namespace Salvo.Migrations
 {
@@ -62,6 +62,26 @@ namespace Salvo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Salvos",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GamePlayerId = table.Column<long>(nullable: false),
+                    Turn = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Salvos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Salvos_GamePlayers_GamePlayerId",
+                        column: x => x.GamePlayerId,
+                        principalTable: "GamePlayers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ships",
                 columns: table => new
                 {
@@ -77,6 +97,26 @@ namespace Salvo.Migrations
                         name: "FK_Ships_GamePlayers_GamePlayerId",
                         column: x => x.GamePlayerId,
                         principalTable: "GamePlayers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalvoLocations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Cell = table.Column<string>(nullable: true),
+                    SalvoId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalvoLocations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalvoLocations_Salvos_SalvoId",
+                        column: x => x.SalvoId,
+                        principalTable: "Salvos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -112,6 +152,16 @@ namespace Salvo.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SalvoLocations_SalvoId",
+                table: "SalvoLocations",
+                column: "SalvoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Salvos_GamePlayerId",
+                table: "Salvos",
+                column: "GamePlayerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShipLocations_ShipId",
                 table: "ShipLocations",
                 column: "ShipId");
@@ -125,7 +175,13 @@ namespace Salvo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "SalvoLocations");
+
+            migrationBuilder.DropTable(
                 name: "ShipLocations");
+
+            migrationBuilder.DropTable(
+                name: "Salvos");
 
             migrationBuilder.DropTable(
                 name: "Ships");
