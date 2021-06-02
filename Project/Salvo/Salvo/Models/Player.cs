@@ -10,5 +10,6 @@ namespace Salvo.Models
         [Required]
         public string Email { get; set; }
         public ICollection<GamePlayer> GamePlayers { get; set; }
+        public ICollection<Score> Scores { get; set; }
     }
 }
