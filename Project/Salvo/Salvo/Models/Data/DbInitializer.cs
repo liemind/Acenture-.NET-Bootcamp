@@ -12,11 +12,11 @@ namespace Salvo.Models.Data
             {
                 var players = new Player[]
                 {
-                    new Player{Email="j.bauer@ctu.gov"},
-                    new Player{Email="c.obrian@ctu.gov"},
-                    new Player{Email="kim_bauer@gmail.com"},
-                    new Player{Email="t.almeida@ctu.gov"},
-                    new Player{Email="t.perez@ctu.gov"}
+                    new Player{Email="j.bauer@ctu.gov", Password="24"},
+                    new Player{Email="c.obrian@ctu.gov", Password="42"},
+                    new Player{Email="kim_bauer@gmail.com", Password="kb"},
+                    new Player{Email="t.almeida@ctu.gov", Password="mole"},
+                    new Player{Email="t.perez@ctu.gov", Password="123"}
                 };
 
                 foreach (Player p in players)
@@ -352,22 +352,22 @@ namespace Salvo.Models.Data
                 Game game3 = context.Games.Find(3L);
                 Game game4 = context.Games.Find(4L);
 
-                Player player1 = context.Players.Find(1L);
-                Player player2 = context.Players.Find(2L);
-                Player player3 = context.Players.Find(3L);
-                Player player4 = context.Players.Find(4L);
-                Player player5 = context.Players.Find(5L);
+                Player jbauer = context.Players.Find(1L);
+                Player obrian = context.Players.Find(2L);
+                Player kbauer = context.Players.Find(3L);
+                Player talmeida = context.Players.Find(4L);
+                Player tperez = context.Players.Find(5L);
 
                 var scores = new Score[]
                 {
-                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game1, Player=player1 },
-                    new Score {Point=2.0, FinishDate=DateTime.Now, Game=game1, Player=player2 },
-                    new Score {Point=0, FinishDate=DateTime.Now, Game=game2, Player=player1 },
-                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game2, Player=player3 },
-                    new Score {Point=1.5, FinishDate=DateTime.Now, Game=game3, Player=player5 },
-                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game3, Player=player4 },
-                    new Score {Point=2.0, FinishDate=DateTime.Now, Game=game4, Player=player3 },
-                    new Score {Point=1.5, FinishDate=DateTime.Now, Game=game4, Player=player4 }
+                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game1, Player=jbauer },
+                    new Score {Point=0, FinishDate=DateTime.Now, Game=game1, Player=obrian },
+                    new Score {Point=0.5, FinishDate=DateTime.Now, Game=game2, Player=jbauer },
+                    new Score {Point=0.5, FinishDate=DateTime.Now, Game=game2, Player=kbauer },
+                    new Score {Point=1.0, FinishDate=DateTime.Now, Game=game3, Player=tperez },
+                    new Score {Point=0, FinishDate=DateTime.Now, Game=game3, Player=talmeida },
+                    new Score {Point=0.5, FinishDate=DateTime.Now, Game=game4, Player=kbauer },
+                    new Score {Point=0.5, FinishDate=DateTime.Now, Game=game4, Player=talmeida }
                 };
 
                 foreach (Score score in scores)

@@ -10,7 +10,7 @@ using Salvo.Models;
 namespace Salvo.Migrations
 {
     [DbContext(typeof(SalvoContext))]
-    [Migration("20210602195303_InitialCreate")]
+    [Migration("20210603132642_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,8 @@ namespace Salvo.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired();
+
+                    b.Property<string>("Password");
 
                     b.HasKey("Id");
 
@@ -192,7 +194,7 @@ namespace Salvo.Migrations
             modelBuilder.Entity("Salvo.Models.Score", b =>
                 {
                     b.HasOne("Salvo.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("Scores")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
 

@@ -32,6 +32,11 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GameP
 DROP TABLE [dbo].[GamePlayers]
 GO
 
+/****** Object:  Table [dbo].[Scores]   Script Date: 02-06-2021 15:46:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Scores]') AND type in (N'U'))
+DROP TABLE [dbo].[Scores]
+GO
+
 /****** Object:  Table [dbo].[Games]    Script Date: 02-06-2021 15:46:29 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Games]') AND type in (N'U'))
 DROP TABLE [dbo].[Games]

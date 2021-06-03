@@ -62,6 +62,8 @@ namespace Salvo.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
+                    b.Property<string>("Password");
+
                     b.HasKey("Id");
 
                     b.ToTable("Players");
