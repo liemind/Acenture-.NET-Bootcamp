@@ -16,7 +16,8 @@ namespace Salvo.Models.Data
                     new Player{Email="c.obrian@ctu.gov", Password="42"},
                     new Player{Email="kim_bauer@gmail.com", Password="kb"},
                     new Player{Email="t.almeida@ctu.gov", Password="mole"},
-                    new Player{Email="t.perez@ctu.gov", Password="123"}
+                    new Player{Email="t.perez@ctu.gov", Password="123"},
+                    new Player{Email="a.almeida@ctu.gov", Password="asdf"}
                 };
 
                 foreach (Player p in players)
@@ -34,7 +35,8 @@ namespace Salvo.Models.Data
                     new Game{CreationDate=DateTime.Now},
                     new Game{CreationDate=DateTime.Now.AddHours(1)},
                     new Game{CreationDate=DateTime.Now.AddHours(2)},
-                    new Game{CreationDate=DateTime.Now.AddHours(3)}
+                    new Game{CreationDate=DateTime.Now.AddHours(3)},
+                    new Game{CreationDate=DateTime.Now.AddHours(4)}
                 };
 
                 foreach (Game g in games)
@@ -51,23 +53,27 @@ namespace Salvo.Models.Data
                 Game game2 = context.Games.Find(2L);
                 Game game3 = context.Games.Find(3L);
                 Game game4 = context.Games.Find(4L);
+                Game game5 = context.Games.Find(5L);
 
-                Player player1 = context.Players.Find(1L);
-                Player player2 = context.Players.Find(2L);
-                Player player3 = context.Players.Find(3L);
-                Player player4 = context.Players.Find(4L);
-                Player player5 = context.Players.Find(5L);
+                Player jbauer = context.Players.Find(1L);
+                Player obrian = context.Players.Find(2L);
+                Player kbauer = context.Players.Find(3L);
+                Player talmeida = context.Players.Find(4L);
+                Player tperez = context.Players.Find(5L);
+                Player aalmeida = context.Players.Find(6L);
 
                 var gameplayers = new GamePlayer[]
                 {
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player1 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=player2 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player1 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=player3 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player5 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=player4 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player3 },
-                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=player4 }
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=jbauer },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game1, Player=obrian },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=jbauer },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game2, Player=kbauer },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=tperez },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game3, Player=talmeida },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=kbauer },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game4, Player=talmeida },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game5, Player=tperez },
+                    new GamePlayer { JoinDate=System.DateTime.Now, Game=game5, Player=aalmeida }
                 };
 
                 foreach (GamePlayer gp in gameplayers)
@@ -244,21 +250,21 @@ namespace Salvo.Models.Data
 
                 var salvos = new Salvo[]
                 {
-                    new Salvo{ Turn = 1, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                    new Salvo{ Turn = 1, GamePlayer = gp1, Locations = new SalvoLocation[]{
                         new SalvoLocation { Cell = "B5"},
                         new SalvoLocation { Cell = "C5"},
                         new SalvoLocation { Cell = "F1"},
                     } },
-                    new Salvo{ Turn = 2, GamePlayer = gp1, Locations = new SalvoLocation[]{ 
+                    new Salvo{ Turn = 2, GamePlayer = gp1, Locations = new SalvoLocation[]{
                         new SalvoLocation { Cell = "F2"},
                         new SalvoLocation { Cell = "F5"},
                     } },
-                    new Salvo{ Turn = 1, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                    new Salvo{ Turn = 1, GamePlayer = gp2, Locations = new SalvoLocation[]{
                         new SalvoLocation { Cell = "B4"},
                         new SalvoLocation { Cell = "B5"},
                         new SalvoLocation { Cell = "B6"},
                     } },
-                    new Salvo{ Turn = 2, GamePlayer = gp2, Locations = new SalvoLocation[]{ 
+                    new Salvo{ Turn = 2, GamePlayer = gp2, Locations = new SalvoLocation[]{
                         new SalvoLocation { Cell = "E1"},
                         new SalvoLocation { Cell = "H3"},
                         new SalvoLocation { Cell = "A2"},

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Salvo.Models;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Salvo.Models;
 
 namespace Salvo.Repositories
 {
@@ -14,7 +10,7 @@ namespace Salvo.Repositories
         {
         }
 
-        public Player findByEmail(string email)
+        public Player FindByEmail(string email)
         {
             return FindAll()
                 .Where(player => player.Email == email)

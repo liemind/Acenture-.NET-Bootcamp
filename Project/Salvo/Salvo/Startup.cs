@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Salvo.Models;
 using Salvo.Repositories;
+using System;
 
 namespace Salvo
 {
@@ -27,6 +29,18 @@ namespace Salvo
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.LoginPath = new PathString("/index.html");
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PlayerOnly", policy => policy.RequireClaim("Player"));
             });
 
             services.AddDbContext<SalvoContext>(options =>
@@ -56,6 +70,7 @@ namespace Salvo
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

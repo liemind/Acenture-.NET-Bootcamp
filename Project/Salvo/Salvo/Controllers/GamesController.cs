@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
@@ -10,6 +11,7 @@ namespace Salvo.Controllers
 {
     [Route("api/games")]
     [ApiController]
+    [Authorize]
     public class GamesController : ControllerBase
     {
         private IGameRepository _repository;
@@ -20,6 +22,7 @@ namespace Salvo.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try
@@ -39,7 +42,7 @@ namespace Salvo.Controllers
                                 Id = gp.Player.Id,
                                 Email = gp.Player.Email
                             },
-                            Point = gp.Player.GetScore(g).Point
+                            Point = gp.Player.GetScore(g) != null ? (double?)gp.Player.GetScore(g).Point : null
                         }).ToList()
                 });
                 return Ok(gamer);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
@@ -10,6 +11,7 @@ namespace Salvo.Controllers
 {
     [Route("api/gamePlayers")]
     [ApiController]
+    [Authorize("PlayerOnly")]
     public class GamePlayersController : ControllerBase
     {
         private IGamePlayerRepository _repository;
@@ -61,7 +63,8 @@ namespace Salvo.Controllers
                                 }).ToList()
                         }).ToList(),
                     salvos = gp.Salvos.Select(
-                        salvo => new SalvoDTO { 
+                        salvo => new SalvoDTO
+                        {
                             Id = salvo.Id,
                             Turn = salvo.Turn,
                             player = new PlayerDTO
@@ -70,7 +73,7 @@ namespace Salvo.Controllers
                                 Email = salvo.GamePlayer.Player.Email
                             },
                             locations = salvo.Locations.Select(
-                                    salvol => new SalvoLocationDTO 
+                                    salvol => new SalvoLocationDTO
                                     {
                                         Id = salvol.Id,
                                         Location = salvol.Cell
