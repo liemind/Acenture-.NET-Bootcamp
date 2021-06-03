@@ -10,7 +10,7 @@ using Salvo.Models;
 namespace Salvo.Migrations
 {
     [DbContext(typeof(SalvoContext))]
-    [Migration("20210602195303_InitialCreate")]
+    [Migration("20210603135656_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,8 @@ namespace Salvo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationDate");
+                    b.Property<DateTime?>("CreationDate")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -42,7 +43,8 @@ namespace Salvo.Migrations
 
                     b.Property<long>("GameId");
 
-                    b.Property<DateTime>("JoinDate");
+                    b.Property<DateTime?>("JoinDate")
+                        .IsRequired();
 
                     b.Property<long>("PlayerId");
 
@@ -63,6 +65,8 @@ namespace Salvo.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired();
+
+                    b.Property<string>("Password");
 
                     b.HasKey("Id");
 
@@ -109,7 +113,7 @@ namespace Salvo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("FinishDate");
+                    b.Property<DateTime?>("FinishDate");
 
                     b.Property<long>("GameId");
 
@@ -192,7 +196,7 @@ namespace Salvo.Migrations
             modelBuilder.Entity("Salvo.Models.Score", b =>
                 {
                     b.HasOne("Salvo.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("Scores")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
 

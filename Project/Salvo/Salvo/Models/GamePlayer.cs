@@ -11,7 +11,7 @@ namespace Salvo.Models
         public long Id { get; set; }
 
         [Required]
-        public DateTime JoinDate { get; set; }
+        public DateTime? JoinDate { get; set; }
         public long GameId { get; set; }
         [ForeignKey("GameId")]
         public Game Game { get; set; }
