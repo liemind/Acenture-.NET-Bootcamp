@@ -12,9 +12,10 @@ namespace Salvo.Repositories
 
         public Player FindByEmail(string email)
         {
-            return FindAll()
-                .Where(player => player.Email == email)
+            return FindByCondition(player => player.Email == email)
+                .OrderBy(player => player.Email)
                 .FirstOrDefault();
         }
+
     }
 }

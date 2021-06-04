@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Salvo.Models;
+using Salvo.Models.DTO;
+using Salvo.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Salvo.Models.DTO;
-using Salvo.Models;
-using Salvo.Repositories;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,6 +18,11 @@ namespace Salvo.Controllers
     public class AuthController : ControllerBase
     {
         private IPlayerRepository _repository;
+
+        public AuthController(IPlayerRepository repository)
+        {
+            _repository = repository;
+        }
 
         // POST: api/Auth/login
         [HttpPost("login")]
