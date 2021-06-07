@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
 using System.Linq;
-using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +15,6 @@ namespace Salvo.Controllers
     public class GamesController : ControllerBase
     {
         private IGameRepository _repository;
-
         public GamesController(IGameRepository repository)
         {
             _repository = repository;
@@ -29,7 +26,7 @@ namespace Salvo.Controllers
         {
             try
             {
-                var user = HttpContext.User.Claims.FirstOrDefault()?.Value;
+                var user = User.Claims.FirstOrDefault()?.Value;
                 var games = _repository.GetAllGamesWithPlayers()
                 .Select(g => new GameDTO
                 {
@@ -50,7 +47,7 @@ namespace Salvo.Controllers
                 });
 
 
-                var gameAuth = new GameAuthDTO
+                var gameAuth = new GameListDTO
                 {
                     Email = user != null ? user : "Guest",
                     games = games
