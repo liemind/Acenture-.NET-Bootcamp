@@ -34,54 +34,69 @@ namespace Salvo.Controllers
         {
             try
             {
-                var gp = _repository.GetGamePlayerView(id);
-                GameViewDTO gameView = new GameViewDTO
+                //get sesion email
+                var user = User.Claims.FirstOrDefault()?.Value;
+                if(user != null)
                 {
-                    Id = gp.Id,
-                    CreationDate = gp.JoinDate,
-                    gamePlayers = gp.Game.GamePlayers.Select(
-                        gpp => new GamePlayerDTO
+                    var gp = _repository.GetGamePlayerView(id);
+                    if(gp.Player.Email == user)
+                    {
+                        GameViewDTO gameView = new GameViewDTO
                         {
-                            Id = gpp.Id,
-                            JoinDate = gpp.JoinDate,
-                            player = new PlayerDTO
+                            Id = gp.Id,
+                            CreationDate = gp.JoinDate,
+                            gamePlayers = gp.Game.GamePlayers.Select(
+                            gpp => new GamePlayerDTO
                             {
-                                Id = gpp.Player.Id,
-                                Email = gpp.Player.Email
-                            }
-                        }).ToList(),
-                    ships = gp.Ships.Select(
-                        ship => new ShipDTO
-                        {
-                            Id = ship.Id,
-                            Type = ship.Type,
-                            Locations = ship.Locations.Select(
-                                shlocation => new ShipLocationDTO
+                                Id = gpp.Id,
+                                JoinDate = gpp.JoinDate,
+                                player = new PlayerDTO
                                 {
-                                    Id = shlocation.Id,
-                                    Location = shlocation.Location
-                                }).ToList()
-                        }).ToList(),
-                    salvos = gp.Salvos.Select(
-                        salvo => new SalvoDTO
-                        {
-                            Id = salvo.Id,
-                            Turn = salvo.Turn,
-                            player = new PlayerDTO
+                                    Id = gpp.Player.Id,
+                                    Email = gpp.Player.Email
+                                }
+                            }).ToList(),
+                            ships = gp.Ships.Select(
+                            ship => new ShipDTO
                             {
-                                Id = salvo.GamePlayer.Player.Id,
-                                Email = salvo.GamePlayer.Player.Email
-                            },
-                            locations = salvo.Locations.Select(
-                                    salvol => new SalvoLocationDTO
+                                Id = ship.Id,
+                                Type = ship.Type,
+                                Locations = ship.Locations.Select(
+                                    shlocation => new ShipLocationDTO
                                     {
-                                        Id = salvol.Id,
-                                        Location = salvol.Cell
+                                        Id = shlocation.Id,
+                                        Location = shlocation.Location
                                     }).ToList()
-                        }).ToList()
-                };
+                            }).ToList(),
+                            salvos = gp.Salvos.Select(
+                            salvo => new SalvoDTO
+                            {
+                                Id = salvo.Id,
+                                Turn = salvo.Turn,
+                                player = new PlayerDTO
+                                {
+                                    Id = salvo.GamePlayer.Player.Id,
+                                    Email = salvo.GamePlayer.Player.Email
+                                },
+                                locations = salvo.Locations.Select(
+                                        salvol => new SalvoLocationDTO
+                                        {
+                                            Id = salvol.Id,
+                                            Location = salvol.Cell
+                                        }).ToList()
+                            }).ToList()
+                        };
 
-                return Ok(gameView);
+                        return Ok(gameView);
+                    }
+                    else
+                    {
+                        return StatusCode(403, "Forbidden");
+                    }
+                    
+                }
+
+                return Unauthorized();
             }
             catch (Exception ex)
             {

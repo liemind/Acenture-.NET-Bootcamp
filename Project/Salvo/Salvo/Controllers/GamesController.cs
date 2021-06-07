@@ -44,7 +44,7 @@ namespace Salvo.Controllers
                             },
                             Point = gp.Player.GetScore(g) != null ? (double?)gp.Player.GetScore(g).Point : null
                         }).ToList()
-                });
+                }).ToList();
 
 
                 var gameAuth = new GameListDTO
