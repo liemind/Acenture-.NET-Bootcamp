@@ -1,5 +1,4 @@
 ﻿using Salvo.Models;
-using System;
 
 namespace Salvo.Repositories
 {
@@ -7,5 +6,6 @@ namespace Salvo.Repositories
     {
         GamePlayer GetGamePlayerView(int idGamePlayer);
         void Save(GamePlayer gamePlayer);
+        GamePlayer FindById(int id);
     }
 }

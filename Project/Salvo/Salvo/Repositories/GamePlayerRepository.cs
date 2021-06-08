@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Salvo.Models;
-using System;
 using System.Linq;
 
 namespace Salvo.Repositories
@@ -36,9 +35,24 @@ namespace Salvo.Repositories
                 .FirstOrDefault();
         }
 
+        public GamePlayer FindById(int id)
+        {
+            return FindByCondition(gp => gp.Id == id)
+                .Include(gp => gp.Ships)
+                    .ThenInclude(ship => ship.Locations)
+                .FirstOrDefault();
+        }
+
         public void Save(GamePlayer gamePlayer)
         {
-            Create(gamePlayer);
+            if (gamePlayer.Id == 0)
+            {
+                Create(gamePlayer);
+            }
+            else
+            {
+                Update(gamePlayer);
+            }
             SaveChanges();
         }
     }

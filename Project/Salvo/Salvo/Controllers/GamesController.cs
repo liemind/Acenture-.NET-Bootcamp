@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Salvo.Models.DTO;
 using Salvo.Models;
+using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -93,9 +93,9 @@ namespace Salvo.Controllers
                     JoinDate = System.DateTime.Now,
                     PlayerId = playerGame.Id,
                     Game = new Game
-                        {
-                            CreationDate = System.DateTime.Now
-                        }
+                    {
+                        CreationDate = System.DateTime.Now
+                    }
                 };
                 //save all
                 _repositoryGP.Save(newGamePlayer);
@@ -124,13 +124,13 @@ namespace Salvo.Controllers
                 }
 
                 //if player exist in game
-                if(FindPlayerInGamePlayers(game.GamePlayers, player.Id) != null)
+                if (FindPlayerInGamePlayers(game.GamePlayers, player.Id) != null)
                 {
                     return StatusCode(403, "Player exist in game");
                 }
 
                 //if player get only one player
-                if(game.GamePlayers.Count > 1)
+                if (game.GamePlayers.Count > 1)
                 {
                     return StatusCode(403, "Game is full");
                 }

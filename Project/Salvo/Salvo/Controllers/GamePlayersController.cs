@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Salvo.Models.DTO;
 using Salvo.Models;
+using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
 using System.Linq;
@@ -16,10 +16,12 @@ namespace Salvo.Controllers
     public class GamePlayersController : ControllerBase
     {
         private IGamePlayerRepository _repository;
+        private IPlayerRepository _repositoryPlayer;
 
-        public GamePlayersController( IGamePlayerRepository repository)
+        public GamePlayersController(IGamePlayerRepository repository, IPlayerRepository repositoryp)
         {
             _repository = repository;
+            _repositoryPlayer = repositoryp;
         }
 
         public string GetSessionEmail()
@@ -98,6 +100,58 @@ namespace Salvo.Controllers
             }
         }
 
+        [HttpPost("{id}/ships")]
+        public IActionResult Post(int id, [FromBody] ShipDTO[] ships)
+        {
+            try
+            {
+                //ships
+                if (ships == null)
+                {
+                    return StatusCode(403, "No hay barcos");
+                }
+
+                //get player.
+                var user = GetSessionEmail();
+                Player player = _repositoryPlayer.FindByEmail(user);
+                //get gp
+                GamePlayer gamePlayer = _repository.FindById(id);
+                if (gamePlayer == null)
+                {
+                    return StatusCode(403, "No existe el juego");
+                }
+                if (gamePlayer.Player.Id != player.Id)
+                {
+                    return StatusCode(403, "El usuario no se encuentra en el juego");
+                }
+                if (gamePlayer.Ships.Count > 0)
+                {
+                    return StatusCode(403, "Ya se han posicionado los barcos");
+                }
+
+                //saved
+                gamePlayer.Ships = ships.Select(
+                    ship => new Ship
+                    {
+                        GamePlayerId = gamePlayer.Id,
+                        Type = ship.Type,
+                        Locations = ship.Locations.Select(
+                            shiplocations => new ShipLocation
+                            {
+                                Location = shiplocations.Location
+                            }).ToList()
+                    }).ToList();
+
+
+                _repository.Save(gamePlayer);
+                return StatusCode(201, "Barcos posicionados!!");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         // POST api/<GamePlayersController>
         //[HttpPost]
         //public ActionResult Post()
