@@ -120,19 +120,19 @@ namespace Salvo.Controllers
                 Game game = _repository.FindById(id);
                 if (game == null)
                 {
-                    return StatusCode(403, "Game is not found/not exist");
+                    return StatusCode(403, "No existe el juego");
                 }
 
                 //if player exist in game
                 if (FindPlayerInGamePlayers(game.GamePlayers, player.Id) != null)
                 {
-                    return StatusCode(403, "Player exist in game");
+                    return StatusCode(403, "Ya se encuentra el jugador en el juego");
                 }
 
                 //if player get only one player
                 if (game.GamePlayers.Count > 1)
                 {
-                    return StatusCode(403, "Game is full");
+                    return StatusCode(403, "Juego lleno");
                 }
 
                 //Create a new Gameplayer with PlayerId and GameId;
@@ -154,38 +154,5 @@ namespace Salvo.Controllers
         }
 
 
-        // GET: api/<GamesController>
-        /*
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-        **/
-
-        //// GET api/<GamesController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<GamesController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/<GamesController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<GamesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

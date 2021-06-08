@@ -40,6 +40,7 @@ namespace Salvo.Repositories
             return FindByCondition(gp => gp.Id == id)
                 .Include(gp => gp.Ships)
                     .ThenInclude(ship => ship.Locations)
+                .Include(gp => gp.Player)
                 .FirstOrDefault();
         }
 

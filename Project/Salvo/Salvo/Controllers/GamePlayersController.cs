@@ -152,38 +152,7 @@ namespace Salvo.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        // POST api/<GamePlayersController>
-        //[HttpPost]
-        //public ActionResult Post()
-        //{
-        //    try
-        //    {
-        //        //about player
-        //        var userEmail = GetSessionEmail();
-        //        Player playerGame = _repositoryPlayer.FindByEmail(userEmail);
 
-        //        //about Game
-        //        //Game NewGame = NewGame()
 
-        //        return StatusCode(201, "");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("{0} Exception caught.", ex);
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        //// PUT api/<GamePlayersController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<GamePlayersController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
