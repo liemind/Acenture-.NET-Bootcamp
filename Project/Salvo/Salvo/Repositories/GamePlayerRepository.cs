@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Salvo.Models;
+using System;
 using System.Linq;
 
 namespace Salvo.Repositories
@@ -35,6 +36,10 @@ namespace Salvo.Repositories
                 .FirstOrDefault();
         }
 
-
+        public void Save(GamePlayer gamePlayer)
+        {
+            Create(gamePlayer);
+            SaveChanges();
+        }
     }
 }

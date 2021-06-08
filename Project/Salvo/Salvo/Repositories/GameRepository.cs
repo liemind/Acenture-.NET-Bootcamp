@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Salvo.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,6 +27,20 @@ namespace Salvo.Repositories
                     .ThenInclude(player => player.Scores))
                 .OrderBy(game => game.CreationDate)
                 .ToList();
+        }
+
+        public void Save(Game game)
+        {
+            Create(game);
+            SaveChanges();
+        }
+
+        public Game FindById(int Id)
+        {
+            return FindByCondition(game => game.Id == Id)
+                .Include(game => game.GamePlayers)
+                .ThenInclude(gp => gp.Player)
+                .FirstOrDefault();
         }
     }
 }

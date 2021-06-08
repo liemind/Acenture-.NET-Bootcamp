@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Salvo.Models.DTO;
+using Salvo.Models;
 using Salvo.Repositories;
 using System;
 using System.Linq;
@@ -16,17 +17,15 @@ namespace Salvo.Controllers
     {
         private IGamePlayerRepository _repository;
 
-        public GamePlayersController(IGamePlayerRepository repository)
+        public GamePlayersController( IGamePlayerRepository repository)
         {
             _repository = repository;
         }
 
-        //// GET: api/<GamePlayersController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        public string GetSessionEmail()
+        {
+            return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
+        }
 
         // GET api/<GamePlayersController>/5
         [HttpGet("{id}")]
@@ -34,18 +33,20 @@ namespace Salvo.Controllers
         {
             try
             {
-                //get sesion email
-                var user = User.Claims.FirstOrDefault()?.Value;
-                if(user != null)
+                //get session email
+                var user = GetSessionEmail();
+                if (user != null)
                 {
                     var gp = _repository.GetGamePlayerView(id);
-                    if(gp.Player.Email == user)
+                    if (gp.Player.Email != user)
                     {
-                        GameViewDTO gameView = new GameViewDTO
-                        {
-                            Id = gp.Id,
-                            CreationDate = gp.JoinDate,
-                            gamePlayers = gp.Game.GamePlayers.Select(
+                        return Forbid();
+                    }
+                    GameViewDTO gameView = new GameViewDTO
+                    {
+                        Id = gp.Id,
+                        CreationDate = gp.JoinDate,
+                        gamePlayers = gp.Game.GamePlayers.Select(
                             gpp => new GamePlayerDTO
                             {
                                 Id = gpp.Id,
@@ -56,7 +57,7 @@ namespace Salvo.Controllers
                                     Email = gpp.Player.Email
                                 }
                             }).ToList(),
-                            ships = gp.Ships.Select(
+                        ships = gp.Ships.Select(
                             ship => new ShipDTO
                             {
                                 Id = ship.Id,
@@ -68,7 +69,7 @@ namespace Salvo.Controllers
                                         Location = shlocation.Location
                                     }).ToList()
                             }).ToList(),
-                            salvos = gp.Salvos.Select(
+                        salvos = gp.Salvos.Select(
                             salvo => new SalvoDTO
                             {
                                 Id = salvo.Id,
@@ -85,17 +86,9 @@ namespace Salvo.Controllers
                                             Location = salvol.Cell
                                         }).ToList()
                             }).ToList()
-                        };
-
-                        return Ok(gameView);
-                    }
-                    else
-                    {
-                        return StatusCode(403, "Forbidden");
-                    }
-                    
+                    };
+                    return Ok(gameView);
                 }
-
                 return Unauthorized();
             }
             catch (Exception ex)
@@ -105,10 +98,26 @@ namespace Salvo.Controllers
             }
         }
 
-        //// POST api/<GamePlayersController>
+        // POST api/<GamePlayersController>
         //[HttpPost]
-        //public void Post([FromBody] string value)
+        //public ActionResult Post()
         //{
+        //    try
+        //    {
+        //        //about player
+        //        var userEmail = GetSessionEmail();
+        //        Player playerGame = _repositoryPlayer.FindByEmail(userEmail);
+
+        //        //about Game
+        //        //Game NewGame = NewGame()
+
+        //        return StatusCode(201, "");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("{0} Exception caught.", ex);
+        //        return StatusCode(500, "Internal server error");
+        //    }
         //}
 
         //// PUT api/<GamePlayersController>/5
