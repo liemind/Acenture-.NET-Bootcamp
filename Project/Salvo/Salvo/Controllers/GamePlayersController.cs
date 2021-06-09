@@ -4,6 +4,7 @@ using Salvo.Models;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,6 +28,11 @@ namespace Salvo.Controllers
         public string GetSessionEmail()
         {
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
+        }
+
+        public int GetTopTurn(ICollection<Models.Salvo> salvos)
+        {
+            return salvos.Max(salvo => salvo.Turn);
         }
 
         // GET api/<GamePlayersController>/5
@@ -124,7 +130,7 @@ namespace Salvo.Controllers
                 {
                     return StatusCode(403, "El usuario no se encuentra en el juego");
                 }
-                if (gamePlayer.Ships.Count > 0)
+                if (gamePlayer.Ships.Count == 5)
                 {
                     return StatusCode(403, "Ya se han posicionado los barcos");
                 }
@@ -153,6 +159,65 @@ namespace Salvo.Controllers
             }
         }
 
+        [HttpPost("{id}/salvos")]
+        public IActionResult Join(int id, [FromBody] SalvoDTO salvos)
+        {
+            try
+            {
+                //salvos
+                if (salvos == null)
+                {
+                    return StatusCode(403, "No hay salvos");
+                }
+
+                //get player.
+                var user = GetSessionEmail();
+                Player player = _repositoryPlayer.FindByEmail(user);
+                //get gp
+                GamePlayer gamePlayer = _repository.FindById(id);
+                if (gamePlayer == null)
+                {
+                    return StatusCode(403, "No existe el juego");
+                }
+                if (gamePlayer.Player.Id != player.Id)
+                {
+                    return StatusCode(403, "El usuario no se encuentra en el juego");
+                }
+                //oponent
+                GamePlayer oponent = gamePlayer.GetOponent(id);
+                oponent = _repository.FindById((int)oponent.Id);
+                //return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
+                int userTurn = gamePlayer.Salvos.Count == 0 ? 0 : GetTopTurn(gamePlayer.Salvos);
+                int oponentTurn = oponent.Salvos.Count == 0 ? 0 : GetTopTurn(oponent.Salvos);
+
+                if (userTurn > oponentTurn)
+                {
+                    return StatusCode(403, "No se puede adelantar el turno");
+                }
+
+
+                //saved
+                List<Models.Salvo> salvoList = new List<Models.Salvo>();
+                salvoList.Add(new Models.Salvo
+                {
+                    GamePlayerId = gamePlayer.Id,
+                    Turn = gamePlayer.Salvos.Count == 0 ? 1 : GetTopTurn(gamePlayer.Salvos) + 1,
+                    Locations = salvos.locations.Select(
+                            salvoLocations => new SalvoLocation
+                            {
+                                Cell = salvoLocations.Location
+                            }).ToList()
+                });
+                gamePlayer.Salvos = salvoList;
+                _repository.Save(gamePlayer);
+
+                return StatusCode(201, "Salvos disparados!!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
     }
 }

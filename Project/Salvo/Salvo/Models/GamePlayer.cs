@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Salvo.Models
 {
@@ -28,5 +29,9 @@ namespace Salvo.Models
             return Player.GetScore(Game);
         }
 
+        public GamePlayer GetOponent(int Id)
+        {
+            return this.Game.GamePlayers.Where(gp => gp.Id != Id).FirstOrDefault();
+        }
     }
 }
