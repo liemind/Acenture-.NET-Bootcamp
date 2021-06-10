@@ -33,5 +33,15 @@ namespace Salvo.Models
         {
             return this.Game.GamePlayers.FirstOrDefault(gp => gp.Id != Id);
         }
+
+        //public GamePlayer GetHits()
+        //{
+
+        //}
+
+        //public GamePlayer GetStunks()
+        //{
+
+        //}
     }
 }
