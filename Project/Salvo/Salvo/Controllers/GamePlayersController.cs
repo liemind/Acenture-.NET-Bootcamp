@@ -30,11 +30,6 @@ namespace Salvo.Controllers
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
         }
 
-        public int GetTopTurn(ICollection<Models.Salvo> salvos)
-        {
-            return salvos.Max(salvo => salvo.Turn);
-        }
-
         // GET api/<GamePlayersController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -160,7 +155,7 @@ namespace Salvo.Controllers
         }
 
         [HttpPost("{id}/salvos")]
-        public IActionResult Join(int id, [FromBody] SalvoDTO salvos)
+        public IActionResult Post(int id, [FromBody] SalvoDTO salvos)
         {
             try
             {
@@ -184,31 +179,34 @@ namespace Salvo.Controllers
                     return StatusCode(403, "El usuario no se encuentra en el juego");
                 }
                 //oponent
-                GamePlayer oponent = gamePlayer.GetOponent(id);
-                oponent = _repository.FindById((int)oponent.Id);
-                //return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
-                int userTurn = gamePlayer.Salvos.Count == 0 ? 0 : GetTopTurn(gamePlayer.Salvos);
-                int oponentTurn = oponent.Salvos.Count == 0 ? 0 : GetTopTurn(oponent.Salvos);
+                GamePlayer opponent = gamePlayer.GetOpponent();
 
-                if (userTurn > oponentTurn)
+                //turns
+                int userTurn = 0;
+                int opponentTurn = 0;
+
+                userTurn = gamePlayer.Salvos != null ? gamePlayer.Salvos.Count() + 1 : 1;
+                if(opponent != null)
+                {
+                    opponentTurn = opponent.Salvos != null ? opponent.Salvos.Count() : 0;
+                }
+                //verify if turn is ok
+                if ((userTurn - opponentTurn) < -1 || (userTurn - opponentTurn) > 1)
                 {
                     return StatusCode(403, "No se puede adelantar el turno");
                 }
 
-
                 //saved
-                List<Models.Salvo> salvoList = new List<Models.Salvo>();
-                salvoList.Add(new Models.Salvo
+                gamePlayer.Salvos.Add(new Models.Salvo
                 {
                     GamePlayerId = gamePlayer.Id,
-                    Turn = gamePlayer.Salvos.Count == 0 ? 1 : GetTopTurn(gamePlayer.Salvos) + 1,
+                    Turn = userTurn,
                     Locations = salvos.locations.Select(
                             salvoLocations => new SalvoLocation
                             {
                                 Cell = salvoLocations.Location
                             }).ToList()
                 });
-                gamePlayer.Salvos = salvoList;
                 _repository.Save(gamePlayer);
 
                 return StatusCode(201, "Salvos disparados!!");

@@ -29,9 +29,9 @@ namespace Salvo.Models
             return Player.GetScore(Game);
         }
 
-        public GamePlayer GetOponent(int Id)
+        public GamePlayer GetOpponent()
         {
-            return this.Game.GamePlayers.Where(gp => gp.Id != Id).FirstOrDefault();
+            return this.Game.GamePlayers.FirstOrDefault(gp => gp.Id != Id);
         }
     }
 }

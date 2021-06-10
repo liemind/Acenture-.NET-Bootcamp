@@ -39,12 +39,11 @@ namespace Salvo.Repositories
         {
             return FindByCondition(gp => gp.Id == id)
                 .Include(gp => gp.Ships)
-                    .ThenInclude(ship => ship.Locations)
                 .Include(gp => gp.Player)
                 .Include(gp => gp.Salvos)
                 .Include(gp => gp.Game)
                     .ThenInclude(game => game.GamePlayers)
-                        .ThenInclude(gplayers => gplayers.Player)
+                        .ThenInclude(gplayers => gplayers.Salvos)
                 .FirstOrDefault();
         }
 
