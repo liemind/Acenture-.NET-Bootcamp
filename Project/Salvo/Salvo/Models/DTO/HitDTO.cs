@@ -7,7 +7,7 @@ namespace Salvo.Models.DTO
 {
     public class HitDTO
     {
-        public int turn { get; set; }
-        public ICollection<ShipLocation> hits { get; set; }
+        public string type { get; set; }
+        public List<string> hits { get; set; }
     }
 }

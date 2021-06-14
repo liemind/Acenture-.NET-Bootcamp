@@ -88,7 +88,11 @@ namespace Salvo.Controllers
                                             Id = salvol.Id,
                                             Location = salvol.Cell
                                         }).ToList()
-                            }).ToList()
+                            }).ToList(),
+                        hits = gp.GetHits(),
+                        hitsOpponent = gp.GetOpponent()?.GetHits(),
+                        sunks = gp.GetStunks(),
+                        sunksOpponent = gp.GetOpponent()?.GetStunks()
                     };
                     return Ok(gameView);
                 }
@@ -180,6 +184,17 @@ namespace Salvo.Controllers
                 }
                 //oponent
                 GamePlayer opponent = gamePlayer.GetOpponent();
+                if (opponent == null)
+                {
+                    return StatusCode(403, "No existe oponente");
+                }
+                opponent = _repository.FindById((int)opponent.Id);
+                //ships
+                if (opponent.Ships == null || opponent.Ships.Count == 0)
+                {
+                    return StatusCode(403, "El oponente no ha puesto sus barcos");
+                }
+
 
                 //turns
                 int userTurn = 0;
@@ -191,9 +206,17 @@ namespace Salvo.Controllers
                     opponentTurn = opponent.Salvos != null ? opponent.Salvos.Count() : 0;
                 }
                 //verify if turn is ok
-                if ((userTurn - opponentTurn) < -1 || (userTurn - opponentTurn) > 1)
+                //if ((userTurn - opponentTurn) < -1 || (userTurn - opponentTurn) > 1)
+                //{
+                //    return StatusCode(403, "No se puede adelantar el turno");
+                //}
+                if (gamePlayer.JoinDate < opponent.JoinDate && (userTurn - opponentTurn) != 1)
                 {
-                    return StatusCode(403, "No se puede adelantar el turno");
+                    return StatusCode(403, "No se puede adelantar al turno");
+                }
+                if (gamePlayer.JoinDate > opponent.JoinDate && (userTurn - opponentTurn) != 0)
+                {
+                    return StatusCode(403, "No se puede adelantar al turno");
                 }
 
                 //saved

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Salvo.Models.DTO
 {
-    public class SunkDTO
+    public class SalvoHitDTO
     {
-        public string type { get; set; }
+        public int turn { get; set; }
+        public List<HitDTO> hits { get; set; }
     }
 }
