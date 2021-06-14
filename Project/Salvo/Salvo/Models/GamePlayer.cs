@@ -36,8 +36,8 @@ namespace Salvo.Models
         }
 
         public ICollection<SalvoHitDTO> GetHits()
-        {
-            return Salvos.Select(salvo => new SalvoHitDTO
+        {             
+            return Salvos?.Select(salvo => new SalvoHitDTO
             {
                 turn = salvo.Turn,
                 hits = GetOpponent()?.Ships.Select(ship => new HitDTO
@@ -51,6 +51,8 @@ namespace Salvo.Models
 
         }
 
+       
+
         public List<string> GetStunks()
         {
             //identify last turn
@@ -60,9 +62,11 @@ namespace Salvo.Models
                 .Where(salvo => salvo.Turn <= lastTurn)
                 .SelectMany(salvo => salvo.Locations.Select(location => location.Cell)).ToList();
             //return opponent ship type
-            return Ships.Where(ship => ship.Locations.Select(shipLocation => shipLocation.Location)
+            return Ships?.Where(ship => ship.Locations.Select(shipLocation => shipLocation.Location)
                         .All(salvoLocation => salvoLocations != null ? salvoLocations.Any(shipLocation => shipLocation == salvoLocation) : false))
                         .Select(ship => ship.Type).ToList();
         }
+
+
     }
 }
