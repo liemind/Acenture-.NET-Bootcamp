@@ -18,16 +18,63 @@ namespace Salvo.Controllers
     {
         private IGamePlayerRepository _repository;
         private IPlayerRepository _repositoryPlayer;
+        private IScoreRepository _repositoryScore;
 
-        public GamePlayersController(IGamePlayerRepository repository, IPlayerRepository repositoryp)
+        public GamePlayersController(IGamePlayerRepository repository, IPlayerRepository repositoryp, IScoreRepository repositorys)
         {
             _repository = repository;
             _repositoryPlayer = repositoryp;
+            _repositoryScore = repositorys;
         }
 
         public string GetSessionEmail()
         {
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
+        }
+
+        public string GetGameState(GamePlayer gp)
+        {
+            double Point = 0;
+            string gameStringState = "";
+            GameState gameState = gp.GetGameState();
+            switch(gameState)
+            {
+                case GameState.WIN :
+                    Point = 2;
+                    gameStringState = "WIN";
+                    break;
+                case GameState.LOSS :
+                    Point = 0;
+                    gameStringState = "LOSS";
+                    break;
+                case GameState.TIE :
+                    Point = 0.5;
+                    gameStringState = "TIE";
+                    break;
+                case GameState.ENTER_SALVO :
+                    gameStringState = "ENTER_SALVO";
+                    break;
+                case GameState.PLACE_SHIPS :
+                    gameStringState = "PLACE_SHIPS";
+                    break;
+                case GameState.WAIT :
+                    gameStringState = "WAIT";
+                    break;
+            }
+            
+            if (gp.Player.GetScore(gp.Game) == null)
+            {
+                //Score save
+                Score newScore = new Score
+                {
+                    FinishDate = DateTime.Now,
+                    GameId = gp.GameId,
+                    PlayerId = gp.PlayerId,
+                    Point = Point
+                };
+                _repositoryScore.Save(newScore);
+            }
+            return gameStringState;
         }
 
         // GET api/<GamePlayersController>/5
@@ -92,7 +139,8 @@ namespace Salvo.Controllers
                         hits = gp.GetHits(),
                         hitsOpponent = gp.GetOpponent()?.GetHits(),
                         sunks = gp.GetStunks(),
-                        sunksOpponent = gp.GetOpponent()?.GetStunks()
+                        sunksOpponent = gp.GetOpponent()?.GetStunks(),
+                        gameState = this.GetGameState(gp)
                     };
                     return Ok(gameView);
                 }

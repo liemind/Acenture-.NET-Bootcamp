@@ -14,5 +14,6 @@ namespace Salvo.Models.DTO
         public ICollection<SalvoHitDTO> hitsOpponent { get; set; }
         public List<string> sunks { get; set; }
         public List<string> sunksOpponent { get; set; }
+        public string gameState { get; set; }
     }
 }

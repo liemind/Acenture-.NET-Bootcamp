@@ -36,7 +36,8 @@ namespace Salvo.Models
         }
 
         public ICollection<SalvoHitDTO> GetHits()
-        {             
+        {
+            //for all the salvos, return the intersection between user salvos and opponen ships
             return Salvos?.Select(salvo => new SalvoHitDTO
             {
                 turn = salvo.Turn,
@@ -49,14 +50,12 @@ namespace Salvo.Models
                 }).ToList()
             }).ToList();
 
-        }
-
-       
+        }   
 
         public List<string> GetStunks()
         {
             //identify last turn
-            int lastTurn = Salvos.Count;
+            int lastTurn = Salvos.Count+1;
             //get the opponent locations
             List<string> salvoLocations = this.GetOpponent()?.Salvos
                 .Where(salvo => salvo.Turn <= lastTurn)
@@ -67,6 +66,64 @@ namespace Salvo.Models
                         .Select(ship => ship.Type).ToList();
         }
 
+        public GameState GetGameState()
+        {
+            GameState gameState = GameState.ENTER_SALVO;
 
+            if (Ships == null || Ships?.Count() == 0)
+            {
+                gameState = GameState.PLACE_SHIPS;
+            }
+            //Player places ships: wait
+            else if (GetOpponent() == null)
+            {
+                //salvos count
+                if (Salvos != null && Salvos?.Count() > 0)
+                {
+                    if (Salvos?.Count > 0 && Salvos != null)
+                    {
+                        gameState = GameState.WAIT;
+                    }
+                }
+            }
+            //All ships placed: Enter salvo
+            else
+            {
+                //opponent
+                GamePlayer opponent = GetOpponent();
+                int opponentTurn = opponent.Salvos != null ? opponent.Salvos.Count() : 0;
+
+                //user
+                int userTurn = Salvos != null ? Salvos.Count() : 0;
+
+                if (userTurn > opponentTurn)
+                {
+                    gameState = GameState.WAIT;
+                }
+                else if (userTurn == opponentTurn && userTurn != 0)
+                {
+                    List<string> strunksUser = this.GetStunks();
+                    List<string> strunksOpponent = opponent.GetStunks();
+
+                    if (strunksUser.Count == Ships.Count() &&
+                        strunksOpponent.Count == opponent.Ships.Count())
+                    {
+                        gameState = GameState.TIE;
+                    }
+
+                    else if (strunksUser.Count() == Ships.Count())
+                    {
+                        gameState = GameState.LOSS;
+                    }
+                    else if (strunksOpponent.Count() == opponent.Ships.Count())
+                    {
+                        gameState = GameState.WIN;
+                    }
+                }
+            }
+
+            // Player creates / joins game: Place ships
+            return gameState;
+        }
     }
 }

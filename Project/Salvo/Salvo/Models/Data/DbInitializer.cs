@@ -12,12 +12,12 @@ namespace Salvo.Models.Data
             {
                 var players = new Player[]
                 {
-                    new Player{Email="j.bauer@ctu.gov", Password="24"},
-                    new Player{Email="c.obrian@ctu.gov", Password="42"},
-                    new Player{Email="kim_bauer@gmail.com", Password="kb"},
-                    new Player{Email="t.almeida@ctu.gov", Password="mole"},
-                    new Player{Email="t.perez@ctu.gov", Password="123"},
-                    new Player{Email="a.almeida@ctu.gov", Password="asdf"}
+                    new Player{Email="j.bauer@ctu.gov", Password="jba"},
+                    new Player{Email="c.obrian@ctu.gov", Password="cob"},
+                    new Player{Email="kim_bauer@gmail.com", Password="kim"},
+                    new Player{Email="t.almeida@ctu.gov", Password="tal"},
+                    new Player{Email="t.perez@ctu.gov", Password="tpe"},
+                    new Player{Email="a.almeida@ctu.gov", Password="aal"}
                 };
 
                 foreach (Player p in players)

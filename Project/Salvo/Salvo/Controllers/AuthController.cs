@@ -50,8 +50,7 @@ namespace Salvo.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("{0} Exception caught.", ex);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -67,8 +66,7 @@ namespace Salvo.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("{0} Exception caught.", ex);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ex.Message);
             }
         }
     }
