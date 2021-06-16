@@ -50,12 +50,12 @@ namespace Salvo.Models
                 }).ToList()
             }).ToList();
 
-        }   
+        }
 
         public List<string> GetStunks()
         {
             //identify last turn
-            int lastTurn = Salvos.Count+1;
+            int lastTurn = Salvos.Count + 1;
             //get the opponent locations
             List<string> salvoLocations = this.GetOpponent()?.Salvos
                 .Where(salvo => salvo.Turn <= lastTurn)

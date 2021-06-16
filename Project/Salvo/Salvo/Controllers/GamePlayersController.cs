@@ -4,7 +4,6 @@ using Salvo.Models;
 using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,47 +29,6 @@ namespace Salvo.Controllers
         public string GetSessionEmail()
         {
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
-        }
-
-        public void SaveScore(GamePlayer PlayerGP, GamePlayer opponentGP)
-        {
-            double point = 0;
-            double opponentPoint = 0;
-            GameState gameState = PlayerGP.GetGameState();
-            switch(gameState)
-            {
-                case GameState.WIN :
-                    point = 1;
-                    opponentPoint = 0;
-                    break;
-                case GameState.LOSS :
-                    point = 0;
-                    opponentPoint = 1;
-                    break;
-                case GameState.TIE :
-                    point = 0.5;
-                    opponentPoint = 0.5;
-                    break;
-            }
-
-            //Score save
-            Score newScore = new Score
-            {
-                FinishDate = DateTime.Now,
-                GameId = PlayerGP.GameId,
-                PlayerId = PlayerGP.PlayerId,
-                Point = point
-            };
-            _repositoryScore.Save(newScore);
-
-            Score newOpponentScore = new Score
-            {
-                FinishDate = DateTime.Now,
-                GameId = opponentGP.GameId,
-                PlayerId = opponentGP.PlayerId,
-                Point = opponentPoint
-            };
-            _repositoryScore.Save(newOpponentScore);
         }
 
         // GET api/<GamePlayersController>/5
@@ -240,7 +198,7 @@ namespace Salvo.Controllers
 
                 //gamestate
                 GameState gameState = gamePlayer.GetGameState();
-                if(gameState == GameState.LOSS || gameState == GameState.WIN ||
+                if (gameState == GameState.LOSS || gameState == GameState.WIN ||
                     gameState == GameState.TIE)
                 {
                     return StatusCode(403, "El juego ya terminó");
@@ -251,7 +209,7 @@ namespace Salvo.Controllers
                 int opponentTurn = 0;
 
                 userTurn = gamePlayer.Salvos != null ? gamePlayer.Salvos.Count() + 1 : 1;
-                if(opponent != null)
+                if (opponent != null)
                 {
                     opponentTurn = opponent.Salvos != null ? opponent.Salvos.Count() : 0;
                 }
@@ -277,8 +235,49 @@ namespace Salvo.Controllers
                             }).ToList()
                 });
                 _repository.Save(gamePlayer);
-                //saved gameState
-                SaveScore(gamePlayer, opponent);
+
+                //saved score
+                gameState = gamePlayer.GetGameState();
+
+                //Score save
+                Score newScore = new Score
+                {
+                    FinishDate = DateTime.Now,
+                    GameId = gamePlayer.GameId,
+                    PlayerId = gamePlayer.PlayerId
+                };
+
+                Score newOpponentScore = new Score
+                {
+                    FinishDate = DateTime.Now,
+                    GameId = opponent.GameId,
+                    PlayerId = opponent.PlayerId
+                };
+
+                switch (gameState)
+                {
+                    case GameState.WIN:
+                        newScore.Point = 1;
+                        newOpponentScore.Point = 0;
+
+                        _repositoryScore.Save(newOpponentScore);
+                        _repositoryScore.Save(newScore);
+                        break;
+                    case GameState.LOSS:
+                        newScore.Point = 0;
+                        newOpponentScore.Point = 1;
+
+                        _repositoryScore.Save(newOpponentScore);
+                        _repositoryScore.Save(newScore);
+                        break;
+                    case GameState.TIE:
+                        newScore.Point = 0.5;
+                        newOpponentScore.Point = 0.5;
+
+                        _repositoryScore.Save(newOpponentScore);
+                        _repositoryScore.Save(newScore);
+                        break;
+                }
 
                 return StatusCode(201, "Salvos disparados!!");
             }
