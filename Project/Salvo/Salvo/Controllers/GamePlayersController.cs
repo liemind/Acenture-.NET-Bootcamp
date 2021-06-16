@@ -32,7 +32,7 @@ namespace Salvo.Controllers
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
         }
 
-        public void SaveGameState(GamePlayer PlayerGP, GamePlayer opponentGP)
+        public void SaveScore(GamePlayer PlayerGP, GamePlayer opponentGP)
         {
             double point = 0;
             double opponentPoint = 0;
@@ -278,7 +278,7 @@ namespace Salvo.Controllers
                 });
                 _repository.Save(gamePlayer);
                 //saved gameState
-                SaveGameState(gamePlayer, opponent);
+                SaveScore(gamePlayer, opponent);
 
                 return StatusCode(201, "Salvos disparados!!");
             }
