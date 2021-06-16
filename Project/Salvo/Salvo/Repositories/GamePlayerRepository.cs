@@ -44,6 +44,11 @@ namespace Salvo.Repositories
                 .Include(gp => gp.Game)
                     .ThenInclude(game => game.GamePlayers)
                         .ThenInclude(gplayers => gplayers.Salvos)
+                            .ThenInclude(salvo => salvo.Locations)
+                .Include(gp => gp.Game)
+                    .ThenInclude(game => game.GamePlayers)
+                        .ThenInclude(gplayers => gplayers.Ships)
+                            .ThenInclude(ship => ship.Locations)
                 .FirstOrDefault();
         }
 

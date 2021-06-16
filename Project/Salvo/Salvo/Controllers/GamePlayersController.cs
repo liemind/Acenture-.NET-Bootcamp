@@ -32,49 +32,45 @@ namespace Salvo.Controllers
             return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
         }
 
-        public string GetGameState(GamePlayer gp)
+        public void SaveGameState(GamePlayer PlayerGP, GamePlayer opponentGP)
         {
-            double Point = 0;
-            string gameStringState = "";
-            GameState gameState = gp.GetGameState();
+            double point = 0;
+            double opponentPoint = 0;
+            GameState gameState = PlayerGP.GetGameState();
             switch(gameState)
             {
                 case GameState.WIN :
-                    Point = 2;
-                    gameStringState = "WIN";
+                    point = 1;
+                    opponentPoint = 0;
                     break;
                 case GameState.LOSS :
-                    Point = 0;
-                    gameStringState = "LOSS";
+                    point = 0;
+                    opponentPoint = 1;
                     break;
                 case GameState.TIE :
-                    Point = 0.5;
-                    gameStringState = "TIE";
-                    break;
-                case GameState.ENTER_SALVO :
-                    gameStringState = "ENTER_SALVO";
-                    break;
-                case GameState.PLACE_SHIPS :
-                    gameStringState = "PLACE_SHIPS";
-                    break;
-                case GameState.WAIT :
-                    gameStringState = "WAIT";
+                    point = 0.5;
+                    opponentPoint = 0.5;
                     break;
             }
-            
-            if (gp.Player.GetScore(gp.Game) == null)
+
+            //Score save
+            Score newScore = new Score
             {
-                //Score save
-                Score newScore = new Score
-                {
-                    FinishDate = DateTime.Now,
-                    GameId = gp.GameId,
-                    PlayerId = gp.PlayerId,
-                    Point = Point
-                };
-                _repositoryScore.Save(newScore);
-            }
-            return gameStringState;
+                FinishDate = DateTime.Now,
+                GameId = PlayerGP.GameId,
+                PlayerId = PlayerGP.PlayerId,
+                Point = point
+            };
+            _repositoryScore.Save(newScore);
+
+            Score newOpponentScore = new Score
+            {
+                FinishDate = DateTime.Now,
+                GameId = opponentGP.GameId,
+                PlayerId = opponentGP.PlayerId,
+                Point = opponentPoint
+            };
+            _repositoryScore.Save(newOpponentScore);
         }
 
         // GET api/<GamePlayersController>/5
@@ -140,7 +136,7 @@ namespace Salvo.Controllers
                         hitsOpponent = gp.GetOpponent()?.GetHits(),
                         sunks = gp.GetStunks(),
                         sunksOpponent = gp.GetOpponent()?.GetStunks(),
-                        gameState = this.GetGameState(gp)
+                        gameState = Enum.GetName(typeof(GameState), gp.GetGameState())
                     };
                     return Ok(gameView);
                 }
@@ -236,13 +232,19 @@ namespace Salvo.Controllers
                 {
                     return StatusCode(403, "No existe oponente");
                 }
-                opponent = _repository.FindById((int)opponent.Id);
                 //ships
                 if (opponent.Ships == null || opponent.Ships.Count == 0)
                 {
                     return StatusCode(403, "El oponente no ha puesto sus barcos");
                 }
 
+                //gamestate
+                GameState gameState = gamePlayer.GetGameState();
+                if(gameState == GameState.LOSS || gameState == GameState.WIN ||
+                    gameState == GameState.TIE)
+                {
+                    return StatusCode(403, "El juego ya terminó");
+                }
 
                 //turns
                 int userTurn = 0;
@@ -253,11 +255,7 @@ namespace Salvo.Controllers
                 {
                     opponentTurn = opponent.Salvos != null ? opponent.Salvos.Count() : 0;
                 }
-                //verify if turn is ok
-                //if ((userTurn - opponentTurn) < -1 || (userTurn - opponentTurn) > 1)
-                //{
-                //    return StatusCode(403, "No se puede adelantar el turno");
-                //}
+
                 if (gamePlayer.JoinDate < opponent.JoinDate && (userTurn - opponentTurn) != 1)
                 {
                     return StatusCode(403, "No se puede adelantar al turno");
@@ -279,6 +277,8 @@ namespace Salvo.Controllers
                             }).ToList()
                 });
                 _repository.Save(gamePlayer);
+                //saved gameState
+                SaveGameState(gamePlayer, opponent);
 
                 return StatusCode(201, "Salvos disparados!!");
             }
