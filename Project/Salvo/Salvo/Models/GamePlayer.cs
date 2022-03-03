@@ -105,6 +105,11 @@ namespace Salvo.Models
                     List<string> strunksUser = this.GetStunks();
                     List<string> strunksOpponent = opponent.GetStunks();
 
+                    if (JoinDate > opponent.JoinDate)
+                    {
+                        gameState = GameState.WAIT;
+                    }
+
                     if (strunksUser.Count == Ships.Count() &&
                         strunksOpponent.Count == opponent.Ships.Count())
                     {
