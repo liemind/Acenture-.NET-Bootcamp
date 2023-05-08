@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Salvo.Models;
+using Salvo.Models.DTO;
 using Salvo.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Salvo.Models.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,77 +13,145 @@ namespace Salvo.Controllers
 {
     [Route("api/games")]
     [ApiController]
+    [Authorize]
     public class GamesController : ControllerBase
     {
         private IGameRepository _repository;
-
-        public GamesController(IGameRepository repository)
+        private IPlayerRepository _repositoryPlayer;
+        private IGamePlayerRepository _repositoryGP;
+        public GamesController(IGameRepository repository, IPlayerRepository repositoryp, IGamePlayerRepository repositorygp)
         {
             _repository = repository;
+            _repositoryPlayer = repositoryp;
+            _repositoryGP = repositorygp;
+        }
+
+        public string GetSessionEmail()
+        {
+            return User.Claims.FirstOrDefault() != null ? User.Claims.FirstOrDefault().Value : "Guest";
+        }
+
+        public GamePlayer FindPlayerInGamePlayers(ICollection<GamePlayer> gamePlayer, long Id)
+        {
+            return gamePlayer.Where(gp => gp.Player.Id == Id).FirstOrDefault();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try
             {
-                var gameplayer = _repository.GetAllGamesWithPlayers()
-                .Select(gdto => new GameDTO
+                var user = GetSessionEmail();
+                var games = _repository.GetAllGamesWithPlayers()
+                .Select(g => new GameDTO
                 {
-                    Id = gdto.Id,
-                    CreationDate = gdto.CreationDate,
-                    GamePlayers = gdto.GamePlayers.Select(
+                    Id = g.Id,
+                    CreationDate = g.CreationDate,
+                    GamePlayers = g.GamePlayers.Select(
                         gp => new GamePlayerDTO
                         {
                             Id = gp.Id,
                             JoinDate = gp.JoinDate,
-                            PlayerDTO = new PlayerDTO
+                            player = new PlayerDTO
                             {
                                 Id = gp.Player.Id,
                                 Email = gp.Player.Email
-                            }
+                            },
+                            Point = gp.Player.GetScore(g) != null ? (double?)gp.Player.GetScore(g).Point : null
                         }).ToList()
-                });
-                return Ok(gameplayer);
+                }).ToList();
+
+
+                var gameAuth = new GameListDTO
+                {
+                    Email = user,
+                    games = games
+                };
+
+                return Ok(gameAuth);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ex.Message);
             }
         }
 
-        // GET: api/<GamesController>
-        /*
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost]
+        public IActionResult Post()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                //about player
+                var userEmail = GetSessionEmail();
+                Player playerGame = _repositoryPlayer.FindByEmail(userEmail);
+
+                //about GamePlayer
+                GamePlayer newGamePlayer = new GamePlayer
+                {
+                    JoinDate = System.DateTime.Now,
+                    PlayerId = playerGame.Id,
+                    Game = new Game
+                    {
+                        CreationDate = System.DateTime.Now
+                    }
+                };
+                //save all
+                _repositoryGP.Save(newGamePlayer);
+                return StatusCode(201, newGamePlayer.Id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
-        **/
 
-        //// GET api/<GamesController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpPost("{id}/players")]
+        public IActionResult Join(int id)
+        {
+            try
+            {
+                //get player
+                String user = GetSessionEmail();
+                Player player = _repositoryPlayer.FindByEmail(user);
 
-        //// POST api/<GamesController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+                //get game with id
+                Game game = _repository.FindById(id);
+                if (game == null)
+                {
+                    return StatusCode(403, "No existe el juego");
+                }
 
-        //// PUT api/<GamesController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+                //if player exist in game
+                if (FindPlayerInGamePlayers(game.GamePlayers, player.Id) != null)
+                {
+                    return StatusCode(403, "Ya se encuentra el jugador en el juego");
+                }
 
-        //// DELETE api/<GamesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+                //if player get only one player
+                if (game.GamePlayers.Count > 1)
+                {
+                    return StatusCode(403, "Juego lleno");
+                }
+
+                //Create a new Gameplayer with PlayerId and GameId;
+                GamePlayer newGamePlayer = new GamePlayer
+                {
+                    JoinDate = System.DateTime.Now,
+                    PlayerId = player.Id,
+                    GameId = game.Id
+                };
+
+                //save all
+                _repositoryGP.Save(newGamePlayer);
+                return StatusCode(201, newGamePlayer.Id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
     }
 }

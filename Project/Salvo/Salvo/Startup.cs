@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Salvo.Models;
 using Salvo.Repositories;
+using System;
 
 namespace Salvo
 {
@@ -29,11 +31,29 @@ namespace Salvo
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.LoginPath = new PathString("/index.html");
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PlayerOnly", policy => policy.RequireClaim("Player"));
+            });
+
             services.AddDbContext<SalvoContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SalvoDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //scopes repositorio
             services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IGamePlayerRepository, GamePlayerRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
+            services.AddScoped<IScoreRepository, ScoreRepository>();
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +73,7 @@ namespace Salvo
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

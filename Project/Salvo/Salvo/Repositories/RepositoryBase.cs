@@ -18,6 +18,17 @@ namespace Salvo.Repositories
         {
             return this.RepositoryContext.Set<T>().AsNoTracking();
         }
+        public IQueryable<T> FindAll(Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
+        {
+            IQueryable<T> queryable = this.RepositoryContext.Set<T>();
+
+            if (includes != null)
+            {
+                queryable = includes(queryable);
+            }
+
+            return queryable.AsNoTracking();
+        }
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return this.RepositoryContext.Set<T>().Where(expression).AsNoTracking();
@@ -34,17 +45,9 @@ namespace Salvo.Repositories
         {
             this.RepositoryContext.Set<T>().Remove(entity);
         }
-
-        public IQueryable<T> FindAll(Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
+        public void SaveChanges()
         {
-            IQueryable<T> queryable = this.RepositoryContext.Set<T>();
-
-            if (includes != null)
-            {
-                queryable = includes(queryable);
-            }
-
-            return queryable.AsNoTracking();
+            this.RepositoryContext.SaveChanges();
         }
 
 

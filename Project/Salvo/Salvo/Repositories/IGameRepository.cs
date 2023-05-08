@@ -7,5 +7,7 @@ namespace Salvo.Repositories
     {
         IEnumerable<Game> GetAllGames();
         IEnumerable<Game> GetAllGamesWithPlayers();
+        void Save(Game game);
+        Game FindById(int Id);
     }
 }
